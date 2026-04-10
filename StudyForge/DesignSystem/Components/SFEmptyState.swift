@@ -44,6 +44,8 @@ struct SFEmptyState: View {
         }
         .padding(Spacing.xxxl)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(title). \(subtitle)")
     }
 }
 

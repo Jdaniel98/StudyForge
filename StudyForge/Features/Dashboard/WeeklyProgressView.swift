@@ -10,9 +10,14 @@ struct WeeklyProgressView: View {
                 .font(Typography.title3Bold)
 
             if subjectProgress.isEmpty {
-                Text("No subjects yet")
-                    .font(Typography.body)
-                    .foregroundStyle(.secondary)
+                HStack(spacing: Spacing.sm) {
+                    Image(systemName: "book.closed")
+                        .foregroundStyle(.tertiary)
+                    Text("Add subjects to track weekly progress")
+                        .font(Typography.caption)
+                        .foregroundStyle(.secondary)
+                }
+                .padding(.vertical, Spacing.md)
             } else {
                 ForEach(subjectProgress) { subject in
                     subjectRow(subject)
@@ -58,9 +63,14 @@ struct SubjectBreakdownChart: View {
                 .font(Typography.title3Bold)
 
             if subjectProgress.isEmpty || totalMinutes == 0 {
-                Text("No study time this week")
-                    .font(Typography.body)
-                    .foregroundStyle(.secondary)
+                HStack(spacing: Spacing.sm) {
+                    Image(systemName: "clock")
+                        .foregroundStyle(.tertiary)
+                    Text("Complete a session to see your breakdown")
+                        .font(Typography.caption)
+                        .foregroundStyle(.secondary)
+                }
+                .padding(.vertical, Spacing.md)
             } else {
                 Chart(subjectProgress) { subject in
                     BarMark(

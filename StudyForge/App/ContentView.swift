@@ -11,6 +11,7 @@ struct ContentView: View {
                 .tabItem {
                     Label("Timer", systemImage: "timer")
                 }
+                .badge(timerService.isActive ? "●" : nil)
 
             DashboardView()
                 .tabItem {

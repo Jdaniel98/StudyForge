@@ -18,6 +18,7 @@ struct SFTag: View {
         .padding(.vertical, Spacing.xs)
         .background(color.opacity(0.1))
         .clipShape(Capsule())
+        .accessibilityLabel(text)
     }
 }
 

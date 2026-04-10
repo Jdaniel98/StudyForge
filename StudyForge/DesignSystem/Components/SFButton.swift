@@ -49,6 +49,7 @@ struct SFButton: View {
             )
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(title)
     }
 
     private var backgroundColor: Color {

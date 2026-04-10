@@ -14,10 +14,13 @@ struct HistoryView: View {
                         title: "No Sessions Yet",
                         subtitle: "Complete a study session and it will appear here."
                     )
+                    .transition(.opacity)
                 } else {
                     sessionList
+                        .transition(.opacity)
                 }
             }
+            .animation(.easeInOut(duration: 0.3), value: viewModel.groupedSessions.isEmpty)
             .background(Theme.surfacePrimaryFallback(for: colorScheme).ignoresSafeArea())
             .navigationTitle("History")
             .searchable(text: $viewModel.searchText, prompt: "Search subjects or notes")
@@ -209,6 +212,8 @@ struct SessionRow: View {
             }
         }
         .background(Theme.surfaceSecondaryFallback(for: colorScheme))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(session.subject?.wrappedShortName ?? "Unknown"), \(session.formattedDuration), \(timeRange), \(session.completedFully ? "completed" : "incomplete")")
     }
 
     private var timeRange: String {

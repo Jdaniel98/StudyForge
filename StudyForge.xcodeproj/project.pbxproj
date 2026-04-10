@@ -81,8 +81,10 @@
 		BDE8912554ED0F07D72E18C5 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C82445F25093052B8C6F0C7 /* DashboardView.swift */; };
 		BEB4AF7BDCAA81C554878D4E /* DailyStreak+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7B53A8560CE5BAB5098FC8 /* DailyStreak+CoreData.swift */; };
 		C2BC9F83284D6B97F38B35D9 /* SFCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6129CBCC406F25A08E416A84 /* SFCard.swift */; };
+		C75CF8BC0E8B87E1A4C01AB9 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52C08414E8D4B1729D0DFD8 /* WelcomeView.swift */; };
 		CA5BEF0E6CEF37B39268C4E3 /* SFProgressRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE45E9540A7FEB1FA5AB1DDD /* SFProgressRing.swift */; };
 		CB22A93DB0133CFF67D77D8C /* WeeklyGoal+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EABA412E3D26E6F6D46D8525 /* WeeklyGoal+CoreData.swift */; };
+		CDE43AFC02565673D14400AD /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52C08414E8D4B1729D0DFD8 /* WelcomeView.swift */; };
 		CE129B6DC2858CB0693A2D55 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4988C44D3D50F121014F23 /* HistoryView.swift */; };
 		CE21953A305B9B182A8C142F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C828215C3D5C02E3CDDD14 /* SettingsView.swift */; };
 		D0516077F597FA9EB0999B22 /* SFButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF688DB972419879DE74375C /* SFButton.swift */; };
@@ -171,6 +173,7 @@
 		B31BACBEF6AD775D7C62E0A0 /* SFEmptyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFEmptyState.swift; sourceTree = "<group>"; };
 		BC8DBF5D08A89834B4133553 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		BE162A8487FD6A76716E7E76 /* StudyForge.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StudyForge.xcdatamodel; sourceTree = "<group>"; };
+		C52C08414E8D4B1729D0DFD8 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		D8FDF6163EC2F33EB970774E /* SFTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFTag.swift; sourceTree = "<group>"; };
 		EABA412E3D26E6F6D46D8525 /* WeeklyGoal+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WeeklyGoal+CoreData.swift"; sourceTree = "<group>"; };
 		EF688DB972419879DE74375C /* SFButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFButton.swift; sourceTree = "<group>"; };
@@ -269,6 +272,14 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		5E49EA3D86096F6779A8DC29 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				C52C08414E8D4B1729D0DFD8 /* WelcomeView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		7CE693414471485E25CF42E5 /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -298,6 +309,7 @@
 				433591F9F52CE06BF5ABD2E3 /* Groups */,
 				352C0E489031677997EE9902 /* History */,
 				48F7283EFF9839785F38F3C8 /* Leaderboard */,
+				5E49EA3D86096F6779A8DC29 /* Onboarding */,
 				4F7226FFCD3F9B75D522E8B2 /* Profile */,
 				FBC053AF98B675BECA58BC52 /* Settings */,
 				F952C3778331F7A07B513DF1 /* Subjects */,
@@ -617,6 +629,7 @@
 				4E261F1E2A772593012656F8 /* View+Modifiers.swift in Sources */,
 				CB22A93DB0133CFF67D77D8C /* WeeklyGoal+CoreData.swift in Sources */,
 				6E2F9BAFFD7318E72F409379 /* WeeklyProgressView.swift in Sources */,
+				CDE43AFC02565673D14400AD /* WelcomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -672,6 +685,7 @@
 				200D81F60E2710875F28AD58 /* View+Modifiers.swift in Sources */,
 				7B433BCA2A55689B12F39A23 /* WeeklyGoal+CoreData.swift in Sources */,
 				7D2997B75419DFB0AEF10E84 /* WeeklyProgressView.swift in Sources */,
+				C75CF8BC0E8B87E1A4C01AB9 /* WelcomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

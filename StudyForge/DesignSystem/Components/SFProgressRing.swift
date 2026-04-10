@@ -38,6 +38,9 @@ struct SFProgressRing: View {
                 .animation(.easeInOut(duration: 0.3), value: progress)
         }
         .frame(width: size, height: size)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Progress")
+        .accessibilityValue("\(Int(progress * 100)) percent")
     }
 }
 
