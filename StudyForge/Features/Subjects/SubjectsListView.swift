@@ -20,13 +20,15 @@ struct SubjectsListView: View {
                     subjectList
                 }
             }
+            .background(Theme.surfacePrimaryFallback(for: colorScheme).ignoresSafeArea())
             .navigationTitle("Subjects")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button {
                         viewModel.addNewSubject()
                     } label: {
-                        Image(systemName: "plus")
+                        Image(systemName: "plus.circle.fill")
+                            .font(.title3)
                     }
                 }
             }
@@ -55,67 +57,75 @@ struct SubjectsListView: View {
     }
 
     private var subjectList: some View {
-        List {
-            ForEach(viewModel.subjects) { subject in
-                subjectRow(subject)
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        viewModel.editSubject(subject)
-                    }
-                    .swipeActions(edge: .trailing) {
-                        Button(role: .destructive) {
-                            Task { await viewModel.archiveSubject(subject) }
-                        } label: {
-                            Label("Archive", systemImage: "archivebox")
+        ScrollView {
+            LazyVStack(spacing: Spacing.sm) {
+                ForEach(viewModel.subjects) { subject in
+                    subjectRow(subject)
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            viewModel.editSubject(subject)
                         }
-                    }
+                        .contextMenu {
+                            Button(role: .destructive) {
+                                Task { await viewModel.archiveSubject(subject) }
+                            } label: {
+                                Label("Archive", systemImage: "archivebox")
+                            }
+                        }
+                }
             }
-            .onMove { source, destination in
-                viewModel.moveSubjects(from: source, to: destination)
-            }
+            .padding(.horizontal, Spacing.lg)
+            .padding(.vertical, Spacing.sm)
         }
-        .listStyle(.plain)
     }
 
     private func subjectRow(_ subject: Subject) -> some View {
         HStack(spacing: Spacing.md) {
-            // Color indicator
-            RoundedRectangle(cornerRadius: 4)
-                .fill(subject.swiftUIColor)
-                .frame(width: 4, height: 40)
-
-            // Icon
+            // Icon with color background
             Image(systemName: subject.wrappedIcon)
-                .font(.title3)
-                .foregroundStyle(subject.swiftUIColor)
-                .frame(width: 32)
+                .font(.body)
+                .foregroundStyle(.white)
+                .frame(width: 36, height: 36)
+                .background(subject.swiftUIColor)
+                .clipShape(RoundedRectangle(cornerRadius: Theme.radiusMedium))
 
             // Name and category
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: 3) {
                 Text(subject.wrappedName)
                     .font(Typography.bodyBold)
+                    .foregroundStyle(Theme.textPrimaryFallback(for: colorScheme))
+                    .lineLimit(1)
 
-                SFTag(text: subject.wrappedCategory, color: subject.swiftUIColor)
+                Text(subject.wrappedCategory)
+                    .font(Typography.caption)
+                    .foregroundStyle(Theme.textMutedFallback(for: colorScheme))
             }
 
             Spacer()
 
-            // Stats
-            VStack(alignment: .trailing, spacing: 2) {
-                Text(DurationFormatter.humanReadableFromMinutes(subject.weeklyTargetMinutes))
+            // Weekly target + total hours
+            VStack(alignment: .trailing, spacing: 3) {
+                Text(DurationFormatter.humanReadableFromMinutes(subject.weeklyTargetMinutes) + "/wk")
                     .font(Typography.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Theme.textSecondaryFallback(for: colorScheme))
 
-                Text("\(String(format: "%.1f", subject.totalStudiedHours))h total")
+                Text(String(format: "%.1fh total", subject.totalStudiedHours))
                     .font(Typography.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Theme.textMutedFallback(for: colorScheme))
             }
+
+            Image(systemName: "chevron.right")
+                .font(.caption)
+                .foregroundStyle(.tertiary)
         }
-        .padding(.vertical, Spacing.xs)
+        .padding(Spacing.md)
+        .background(Theme.surfaceSecondaryFallback(for: colorScheme))
+        .clipShape(RoundedRectangle(cornerRadius: Theme.radiusLarge))
     }
 }
 
 #Preview {
     SubjectsListView()
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        .preferredColorScheme(.dark)
 }

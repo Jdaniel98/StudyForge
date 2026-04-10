@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject private var timerService: TimerService
+    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
         #if os(iOS)
@@ -13,7 +14,7 @@ struct ContentView: View {
 
             DashboardView()
                 .tabItem {
-                    Label("Dashboard", systemImage: "chart.bar")
+                    Label("Dashboard", systemImage: "chart.bar.fill")
                 }
 
             HistoryView()
@@ -28,42 +29,45 @@ struct ContentView: View {
 
             SettingsView()
                 .tabItem {
-                    Label("Settings", systemImage: "gearshape")
+                    Label("Settings", systemImage: "gearshape.fill")
                 }
         }
+        .tint(Theme.accentFocus)
         #else
         NavigationSplitView {
             List {
-                NavigationLink {
-                    TimerView()
-                } label: {
-                    Label("Timer", systemImage: "timer")
+                Section("Study") {
+                    NavigationLink {
+                        TimerView()
+                    } label: {
+                        Label("Timer", systemImage: "timer")
+                    }
+
+                    NavigationLink {
+                        DashboardView()
+                    } label: {
+                        Label("Dashboard", systemImage: "chart.bar.fill")
+                    }
+
+                    NavigationLink {
+                        HistoryView()
+                    } label: {
+                        Label("History", systemImage: "clock.arrow.circlepath")
+                    }
                 }
 
-                NavigationLink {
-                    DashboardView()
-                } label: {
-                    Label("Dashboard", systemImage: "chart.bar")
-                }
+                Section("Manage") {
+                    NavigationLink {
+                        SubjectsListView()
+                    } label: {
+                        Label("Subjects", systemImage: "book.fill")
+                    }
 
-                NavigationLink {
-                    HistoryView()
-                } label: {
-                    Label("History", systemImage: "clock.arrow.circlepath")
-                }
-
-                NavigationLink {
-                    SubjectsListView()
-                } label: {
-                    Label("Subjects", systemImage: "book.fill")
-                }
-
-                Divider()
-
-                NavigationLink {
-                    SettingsView()
-                } label: {
-                    Label("Settings", systemImage: "gearshape")
+                    NavigationLink {
+                        SettingsView()
+                    } label: {
+                        Label("Settings", systemImage: "gearshape.fill")
+                    }
                 }
             }
             .navigationTitle("StudyForge")
@@ -79,4 +83,5 @@ struct ContentView: View {
     ContentView()
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
         .environmentObject(TimerService())
+        .preferredColorScheme(.dark)
 }

@@ -14,7 +14,7 @@ final class TimerViewModel: ObservableObject {
 
     // MARK: - Dependencies
 
-    let timerService: TimerService
+    private(set) var timerService: TimerService?
     private let subjectRepository: SubjectRepository
     private let sessionRepository: SessionRepository
     private let statsRepository: StatsRepository
@@ -22,19 +22,30 @@ final class TimerViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     init(
-        timerService: TimerService,
         subjectRepository: SubjectRepository = SubjectRepository(),
         sessionRepository: SessionRepository = SessionRepository(),
         statsRepository: StatsRepository = StatsRepository(),
         preferencesRepository: PreferencesRepository = PreferencesRepository()
     ) {
-        self.timerService = timerService
         self.subjectRepository = subjectRepository
         self.sessionRepository = sessionRepository
         self.statsRepository = statsRepository
         self.preferencesRepository = preferencesRepository
+    }
 
-        observeTimerCompletion()
+    /// Bind to the shared TimerService from the environment. Called once on appear.
+    func bind(to timerService: TimerService) {
+        guard self.timerService == nil else { return }
+        self.timerService = timerService
+
+        timerService.$state
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                if state == .completed || state == .idle {
+                    self?.loadData()
+                }
+            }
+            .store(in: &cancellables)
     }
 
     // MARK: - Data Loading
@@ -46,7 +57,6 @@ final class TimerViewModel: ObservableObject {
             todaySessionCount = try sessionRepository.fetchTodaySessionCount()
             currentStreak = try statsRepository.fetchCurrentStreak()
 
-            // Auto-select first subject if none selected
             if selectedSubject == nil {
                 selectedSubject = subjects.first
             }
@@ -58,6 +68,7 @@ final class TimerViewModel: ObservableObject {
     // MARK: - Timer Actions
 
     func startTimer() {
+        guard let timerService else { return }
         guard let subject = selectedSubject, let subjectID = subject.id else {
             error = .noSubjectSelected
             return
@@ -68,30 +79,20 @@ final class TimerViewModel: ObservableObject {
         timerService.start(subjectID: subjectID, durationSeconds: duration)
     }
 
-    func pauseTimer() {
-        timerService.pause()
-    }
-
-    func resumeTimer() {
-        timerService.resume()
-    }
-
-    func skipTimer() {
-        timerService.skip()
-    }
-
-    func cancelTimer() {
-        timerService.cancel()
-    }
+    func pauseTimer() { timerService?.pause() }
+    func resumeTimer() { timerService?.resume() }
+    func skipTimer() { timerService?.skip() }
+    func cancelTimer() { timerService?.cancel() }
 
     func startBreak() {
+        guard let timerService else { return }
         let prefs = try? preferencesRepository.fetch()
         let pomosBeforeLong = Int(prefs?.pomosBeforeLongBreak ?? UserPreferences.defaultPomosBeforeLongBreak)
         let isLong = timerService.pomodorosCompleted > 0 && timerService.pomodorosCompleted % pomosBeforeLong == 0
         timerService.startBreak(isLong: isLong)
     }
 
-    // MARK: - Computed Display Properties
+    // MARK: - Display
 
     var formattedTodayTotal: String {
         DurationFormatter.humanReadable(from: todayTotalSeconds)
@@ -99,18 +100,5 @@ final class TimerViewModel: ObservableObject {
 
     var subjectColor: Color {
         selectedSubject?.swiftUIColor ?? Color(hex: "3B82F6")
-    }
-
-    // MARK: - Private
-
-    private func observeTimerCompletion() {
-        timerService.$state
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] state in
-                if state == .completed || state == .idle {
-                    self?.loadData()
-                }
-            }
-            .store(in: &cancellables)
     }
 }

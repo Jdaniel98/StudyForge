@@ -2,37 +2,37 @@ import SwiftUI
 
 struct TimerView: View {
     @EnvironmentObject private var timerService: TimerService
-    @Environment(\.managedObjectContext) private var viewContext
-
-    @StateObject private var viewModel: TimerViewModel
-
-    init() {
-        // TimerService will be injected via EnvironmentObject once the view appears
-        _viewModel = StateObject(wrappedValue: TimerViewModel(timerService: TimerService()))
-    }
+    @Environment(\.colorScheme) private var colorScheme
+    @StateObject private var viewModel = TimerViewModel()
 
     var body: some View {
-        VStack(spacing: 0) {
-            Spacer()
+        ZStack {
+            // Background
+            Theme.surfacePrimaryFallback(for: colorScheme)
+                .ignoresSafeArea()
 
-            timerSection
+            VStack(spacing: 0) {
+                Spacer()
 
-            Spacer()
+                timerSection
+                    .animation(.easeInOut(duration: 0.3), value: timerService.state)
 
-            controlsSection
-                .padding(.bottom, Spacing.xl)
+                Spacer()
 
-            todaySummarySection
-                .padding(.horizontal, Spacing.xl)
-                .padding(.bottom, Spacing.xxl)
+                controlsSection
+                    .padding(.bottom, Spacing.xxl)
+                    .animation(.spring(response: 0.4, dampingFraction: 0.8), value: timerService.state)
+
+                todaySummarySection
+                    .padding(.horizontal, Spacing.lg)
+                    .padding(.bottom, Spacing.xxl)
+            }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(hex: "0F172A"))
         .onAppear {
+            viewModel.bind(to: timerService)
             viewModel.loadData()
         }
         .task {
-            // Request notification permission on first appearance
             _ = await NotificationService().requestPermission()
         }
         .alert(
@@ -47,47 +47,67 @@ struct TimerView: View {
         } message: { error in
             Text(error.localizedDescription)
         }
-        // Re-inject the shared TimerService from environment
-        .onReceive(timerService.$state) { _ in
-            // Keep viewModel in sync with the shared timer service
-        }
     }
 
     // MARK: - Timer Section
 
     private var timerSection: some View {
-        VStack(spacing: Spacing.xl) {
-            // Subject picker
+        VStack(spacing: Spacing.xxl) {
+            // Subject label or picker
             if !timerService.isActive {
                 subjectPicker
+                    .transition(.opacity.combined(with: .scale(scale: 0.95)))
             } else if let subject = viewModel.selectedSubject {
-                VStack(spacing: Spacing.xs) {
+                VStack(spacing: Spacing.sm) {
                     Text(subject.wrappedShortName)
-                        .font(Typography.title3Bold)
-                        .foregroundStyle(.white)
+                        .font(Typography.title2Bold)
+                        .foregroundStyle(Theme.textPrimaryFallback(for: colorScheme))
 
                     SFTag(text: subject.wrappedCategory, color: subject.swiftUIColor)
                 }
+                .transition(.opacity)
             }
 
-            // Progress ring + timer
+            // Progress ring + countdown
             ZStack {
                 SFProgressRing(
                     progress: timerService.progress,
                     accentColor: ringColor,
-                    size: 240,
-                    lineWidth: 8
+                    size: 260,
+                    lineWidth: 10
                 )
 
-                VStack(spacing: Spacing.xs) {
+                VStack(spacing: Spacing.sm) {
                     Text(timerService.formattedTime)
                         .font(Typography.monoTimer)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(Theme.textPrimaryFallback(for: colorScheme))
+                        .contentTransition(.numericText())
 
                     Text(stateLabel)
-                        .font(Typography.caption)
-                        .foregroundStyle(.secondary)
+                        .font(Typography.footnote)
+                        .textCase(.uppercase)
+                        .tracking(1.2)
+                        .foregroundStyle(Theme.textMutedFallback(for: colorScheme))
                 }
+            }
+
+            // Pomodoro dots
+            if timerService.pomodorosCompleted > 0 || timerService.isActive {
+                pomodoroDots
+            }
+        }
+    }
+
+    // MARK: - Pomodoro Dots
+
+    private var pomodoroDots: some View {
+        HStack(spacing: Spacing.sm) {
+            ForEach(0..<4, id: \.self) { index in
+                Circle()
+                    .fill(index < timerService.pomodorosCompleted
+                          ? viewModel.subjectColor
+                          : Theme.surfaceTertiaryFallback(for: colorScheme))
+                    .frame(width: 8, height: 8)
             }
         }
     }
@@ -98,14 +118,16 @@ struct TimerView: View {
         Menu {
             ForEach(viewModel.subjects) { subject in
                 Button {
-                    viewModel.selectedSubject = subject
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        viewModel.selectedSubject = subject
+                    }
                 } label: {
                     Label(subject.wrappedName, systemImage: subject.wrappedIcon)
                 }
             }
 
             if viewModel.subjects.isEmpty {
-                Text("No subjects — create one in Subjects tab")
+                Text("No subjects — add one in the Subjects tab")
             }
         } label: {
             HStack(spacing: Spacing.sm) {
@@ -116,16 +138,19 @@ struct TimerView: View {
                     Text(subject.wrappedShortName)
                         .font(Typography.bodyBold)
                 } else {
+                    Image(systemName: "book.fill")
+                        .font(.body)
                     Text("Select Subject")
                         .font(Typography.bodyBold)
                 }
-                Image(systemName: "chevron.down")
-                    .font(.caption)
+                Image(systemName: "chevron.up.chevron.down")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
             }
-            .foregroundStyle(.white)
+            .foregroundStyle(Theme.textPrimaryFallback(for: colorScheme))
             .padding(.horizontal, Spacing.lg)
-            .padding(.vertical, Spacing.sm)
-            .background(Color.white.opacity(0.1))
+            .padding(.vertical, Spacing.md)
+            .background(.ultraThinMaterial)
             .clipShape(Capsule())
         }
     }
@@ -133,49 +158,47 @@ struct TimerView: View {
     // MARK: - Controls
 
     private var controlsSection: some View {
-        HStack(spacing: Spacing.xl) {
+        HStack(spacing: Spacing.lg) {
             switch timerService.state {
             case .idle:
                 SFButton("Start", icon: "play.fill", variant: .primary) {
                     viewModel.startTimer()
                 }
-                .frame(maxWidth: 200)
+                .frame(maxWidth: 220)
 
             case .running:
                 SFButton("Pause", icon: "pause.fill", variant: .secondary) {
                     viewModel.pauseTimer()
                 }
-                .frame(maxWidth: 140)
+                .frame(maxWidth: 160)
 
                 SFButton("Cancel", variant: .ghost) {
                     viewModel.cancelTimer()
                 }
-                .frame(maxWidth: 100)
 
             case .paused:
                 SFButton("Resume", icon: "play.fill", variant: .primary) {
                     viewModel.resumeTimer()
                 }
-                .frame(maxWidth: 140)
+                .frame(maxWidth: 160)
 
                 SFButton("Skip", variant: .ghost) {
                     viewModel.skipTimer()
                 }
-                .frame(maxWidth: 100)
 
             case .onBreak:
                 SFButton("Skip Break", icon: "forward.fill", variant: .secondary) {
                     viewModel.skipTimer()
                 }
-                .frame(maxWidth: 200)
+                .frame(maxWidth: 220)
 
             case .completed:
-                SFButton("Take Break", icon: "cup.and.saucer.fill", variant: .secondary) {
+                SFButton("Break", icon: "cup.and.saucer.fill", variant: .secondary) {
                     viewModel.startBreak()
                 }
                 .frame(maxWidth: 160)
 
-                SFButton("Continue", icon: "play.fill", variant: .primary) {
+                SFButton("Next", icon: "play.fill", variant: .primary) {
                     viewModel.startTimer()
                 }
                 .frame(maxWidth: 160)
@@ -187,56 +210,39 @@ struct TimerView: View {
     // MARK: - Today Summary
 
     private var todaySummarySection: some View {
-        SFCard {
-            HStack {
-                statItem(
-                    label: "Today",
-                    value: viewModel.formattedTodayTotal,
-                    icon: "clock"
-                )
-
-                Spacer()
-
-                Divider()
-                    .frame(height: 32)
-
-                Spacer()
-
-                statItem(
-                    label: "Sessions",
-                    value: "\(viewModel.todaySessionCount)",
-                    icon: "checkmark.circle"
-                )
-
-                Spacer()
-
-                Divider()
-                    .frame(height: 32)
-
-                Spacer()
-
-                statItem(
-                    label: "Streak",
-                    value: "\(viewModel.currentStreak)d",
-                    icon: "flame"
-                )
-            }
+        HStack(spacing: 0) {
+            statItem(label: "Today", value: viewModel.formattedTodayTotal, icon: "clock")
+            Spacer()
+            divider
+            Spacer()
+            statItem(label: "Sessions", value: "\(viewModel.todaySessionCount)", icon: "checkmark.circle")
+            Spacer()
+            divider
+            Spacer()
+            statItem(label: "Streak", value: "\(viewModel.currentStreak)d", icon: "flame")
         }
+        .sfCardStyle()
+    }
+
+    private var divider: some View {
+        Rectangle()
+            .fill(Theme.borderSubtleFallback(for: colorScheme))
+            .frame(width: 1, height: 28)
     }
 
     private func statItem(label: String, value: String, icon: String) -> some View {
         VStack(spacing: Spacing.xs) {
             HStack(spacing: Spacing.xs) {
                 Image(systemName: icon)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(.caption2)
                 Text(label)
                     .font(Typography.caption)
-                    .foregroundStyle(.secondary)
             }
+            .foregroundStyle(Theme.textMutedFallback(for: colorScheme))
+
             Text(value)
                 .font(Typography.monoStats)
-                .foregroundStyle(.white)
+                .foregroundStyle(Theme.textPrimaryFallback(for: colorScheme))
         }
     }
 
@@ -244,7 +250,7 @@ struct TimerView: View {
 
     private var ringColor: Color {
         switch timerService.state {
-        case .onBreak: Color(hex: "10B981") // Emerald for breaks
+        case .onBreak: Color(hex: "10B981")
         default: viewModel.subjectColor
         }
     }
@@ -255,7 +261,7 @@ struct TimerView: View {
         case .running: "Focus"
         case .paused: "Paused"
         case .onBreak(let isLong): isLong ? "Long Break" : "Short Break"
-        case .completed: "Complete!"
+        case .completed: "Complete"
         }
     }
 }

@@ -1,90 +1,20 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @Environment(\.colorScheme) private var colorScheme
     @StateObject private var viewModel = SettingsViewModel()
 
     var body: some View {
         NavigationStack {
             Form {
-                // Timer Durations
-                Section("Timer") {
-                    durationRow(
-                        label: "Focus Duration",
-                        value: $viewModel.focusDurationMinutes,
-                        range: 5...120,
-                        step: 5,
-                        unit: "min"
-                    )
-
-                    durationRow(
-                        label: "Short Break",
-                        value: $viewModel.shortBreakMinutes,
-                        range: 1...30,
-                        step: 1,
-                        unit: "min"
-                    )
-
-                    durationRow(
-                        label: "Long Break",
-                        value: $viewModel.longBreakMinutes,
-                        range: 5...60,
-                        step: 5,
-                        unit: "min"
-                    )
-
-                    durationRow(
-                        label: "Pomodoros Before Long Break",
-                        value: $viewModel.pomosBeforeLongBreak,
-                        range: 2...8,
-                        step: 1,
-                        unit: ""
-                    )
-                }
-
-                // Auto-start
-                Section("Behavior") {
-                    Toggle("Auto-start breaks", isOn: $viewModel.autoStartBreaks)
-                        .onChange(of: viewModel.autoStartBreaks) { _, _ in viewModel.savePreferences() }
-
-                    Toggle("Auto-start focus after break", isOn: $viewModel.autoStartFocus)
-                        .onChange(of: viewModel.autoStartFocus) { _, _ in viewModel.savePreferences() }
-                }
-
-                // Feedback
-                Section("Feedback") {
-                    Toggle("Sound", isOn: $viewModel.soundEnabled)
-                        .onChange(of: viewModel.soundEnabled) { _, _ in viewModel.savePreferences() }
-
-                    #if os(iOS)
-                    Toggle("Haptics", isOn: $viewModel.hapticsEnabled)
-                        .onChange(of: viewModel.hapticsEnabled) { _, _ in viewModel.savePreferences() }
-                    #endif
-                }
-
-                // Data
-                Section("Data") {
-                    Toggle("iCloud Sync", isOn: $viewModel.iCloudSyncEnabled)
-                        .onChange(of: viewModel.iCloudSyncEnabled) { _, _ in viewModel.savePreferences() }
-
-                    Text("Sync personal data across your Apple devices")
-                        .font(Typography.caption)
-                        .foregroundStyle(.secondary)
-                }
-
-                // About
-                Section("About") {
-                    HStack {
-                        Text("Version")
-                        Spacer()
-                        Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0")
-                            .foregroundStyle(.secondary)
-                    }
-                }
+                timerSection
+                behaviorSection
+                feedbackSection
+                dataSection
+                aboutSection
             }
             .navigationTitle("Settings")
-            .onAppear {
-                viewModel.loadPreferences()
-            }
+            .onAppear { viewModel.loadPreferences() }
             .alert(
                 "Error",
                 isPresented: Binding(
@@ -100,29 +30,103 @@ struct SettingsView: View {
         }
     }
 
-    private func durationRow(
-        label: String,
-        value: Binding<Double>,
-        range: ClosedRange<Double>,
-        step: Double,
-        unit: String
-    ) -> some View {
-        VStack(alignment: .leading, spacing: Spacing.xs) {
+    // MARK: - Timer
+
+    private var timerSection: some View {
+        Section {
+            durationRow(label: "Focus", value: $viewModel.focusDurationMinutes, range: 5...120, step: 5)
+            durationRow(label: "Short break", value: $viewModel.shortBreakMinutes, range: 1...30, step: 1)
+            durationRow(label: "Long break", value: $viewModel.longBreakMinutes, range: 5...60, step: 5)
+            durationRow(label: "Pomodoros before long break", value: $viewModel.pomosBeforeLongBreak, range: 2...8, step: 1, isMins: false)
+        } header: {
+            Label("Timer", systemImage: "timer")
+        }
+    }
+
+    // MARK: - Behavior
+
+    private var behaviorSection: some View {
+        Section {
+            Toggle("Auto-start breaks", isOn: $viewModel.autoStartBreaks)
+                .onChange(of: viewModel.autoStartBreaks) { _, _ in viewModel.savePreferences() }
+
+            Toggle("Auto-start focus after break", isOn: $viewModel.autoStartFocus)
+                .onChange(of: viewModel.autoStartFocus) { _, _ in viewModel.savePreferences() }
+        } header: {
+            Label("Behavior", systemImage: "gearshape.2")
+        }
+    }
+
+    // MARK: - Feedback
+
+    private var feedbackSection: some View {
+        Section {
+            Toggle("Sounds", isOn: $viewModel.soundEnabled)
+                .onChange(of: viewModel.soundEnabled) { _, _ in viewModel.savePreferences() }
+
+            #if os(iOS)
+            Toggle("Haptics", isOn: $viewModel.hapticsEnabled)
+                .onChange(of: viewModel.hapticsEnabled) { _, _ in viewModel.savePreferences() }
+            #endif
+        } header: {
+            Label("Feedback", systemImage: "bell")
+        }
+    }
+
+    // MARK: - Data
+
+    private var dataSection: some View {
+        Section {
+            Toggle("iCloud Sync", isOn: $viewModel.iCloudSyncEnabled)
+                .onChange(of: viewModel.iCloudSyncEnabled) { _, _ in viewModel.savePreferences() }
+        } header: {
+            Label("Data", systemImage: "icloud")
+        } footer: {
+            Text("Sync personal study data across your Apple devices via iCloud.")
+        }
+    }
+
+    // MARK: - About
+
+    private var aboutSection: some View {
+        Section {
+            HStack {
+                Text("Version")
+                Spacer()
+                Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0")
+                    .foregroundStyle(.secondary)
+            }
+
+            HStack {
+                Text("Build")
+                Spacer()
+                Text(Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1")
+                    .foregroundStyle(.secondary)
+            }
+        } header: {
+            Label("About", systemImage: "info.circle")
+        }
+    }
+
+    // MARK: - Duration Row
+
+    private func durationRow(label: String, value: Binding<Double>, range: ClosedRange<Double>, step: Double, isMins: Bool = true) -> some View {
+        VStack(spacing: Spacing.sm) {
             HStack {
                 Text(label)
                 Spacer()
-                Text(unit.isEmpty ? "\(Int(value.wrappedValue))" : "\(Int(value.wrappedValue)) \(unit)")
+                Text(isMins ? "\(Int(value.wrappedValue)) min" : "\(Int(value.wrappedValue))")
                     .font(Typography.bodyBold)
-                    .foregroundStyle(.secondary)
+                    .monospacedDigit()
+                    .foregroundStyle(.blue)
             }
 
             Slider(value: value, in: range, step: step) {
                 Text(label)
             } onEditingChanged: { editing in
-                if !editing {
-                    viewModel.savePreferences()
-                }
+                if !editing { viewModel.savePreferences() }
             }
+            .tint(.blue)
         }
     }
 }
@@ -130,4 +134,5 @@ struct SettingsView: View {
 #Preview {
     SettingsView()
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        .preferredColorScheme(.dark)
 }
