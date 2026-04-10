@@ -76,7 +76,13 @@ final class TimerViewModel: ObservableObject {
 
         let prefs = try? preferencesRepository.fetch()
         let duration = Int(prefs?.focusDurationSeconds ?? UserPreferences.defaultFocusDuration)
-        timerService.start(subjectID: subjectID, durationSeconds: duration)
+        timerService.start(
+            subjectID: subjectID,
+            durationSeconds: duration,
+            subjectName: subject.wrappedShortName,
+            subjectColorHex: subject.wrappedColor,
+            subjectIcon: subject.wrappedIcon
+        )
     }
 
     func pauseTimer() { timerService?.pause() }
