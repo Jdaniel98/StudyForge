@@ -1,21 +1,24 @@
 import SwiftUI
 
 struct DashboardView: View {
+    @Environment(\.colorScheme) private var colorScheme
     @StateObject private var viewModel = DashboardViewModel()
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: Spacing.xl) {
-                    todaySummaryCard
-                    streakCard
+                VStack(spacing: Spacing.lg) {
+                    statsRow
+                    streakRow
                     heatmapSection
                     weeklyProgressSection
                     subjectBreakdownSection
                     weeklyReviewSection
                 }
-                .padding(Spacing.lg)
+                .padding(.horizontal, Spacing.lg)
+                .padding(.vertical, Spacing.md)
             }
+            .background(Theme.surfacePrimaryFallback(for: colorScheme).ignoresSafeArea())
             .navigationTitle("Dashboard")
             .onAppear { viewModel.loadAll() }
             .refreshable { viewModel.loadAll() }
@@ -34,108 +37,115 @@ struct DashboardView: View {
         }
     }
 
-    // MARK: - Today Summary
+    // MARK: - Stats Row
 
-    private var todaySummaryCard: some View {
-        SFCard {
-            HStack {
-                statColumn(
-                    label: "Today",
-                    value: viewModel.formattedTodayTotal,
-                    icon: "clock"
-                )
+    private var statsRow: some View {
+        HStack(spacing: Spacing.md) {
+            miniStatCard(
+                label: "Today",
+                value: viewModel.formattedTodayTotal,
+                icon: "clock",
+                iconColor: .blue
+            )
 
-                Spacer()
+            miniStatCard(
+                label: "Sessions",
+                value: "\(viewModel.todaySessionCount)",
+                icon: "checkmark.circle.fill",
+                iconColor: .green
+            )
 
-                Divider().frame(height: 40)
-
-                Spacer()
-
-                statColumn(
-                    label: "Sessions",
-                    value: "\(viewModel.todaySessionCount)",
-                    icon: "checkmark.circle"
-                )
-
-                Spacer()
-
-                Divider().frame(height: 40)
-
-                Spacer()
-
-                statColumn(
-                    label: "This Week",
-                    value: viewModel.formattedWeeklyTotal,
-                    icon: "calendar"
-                )
-            }
+            miniStatCard(
+                label: "This Week",
+                value: viewModel.formattedWeeklyTotal,
+                icon: "calendar",
+                iconColor: .purple
+            )
         }
     }
 
-    // MARK: - Streak Card
-
-    private var streakCard: some View {
-        HStack(spacing: Spacing.lg) {
-            SFCard {
-                HStack {
-                    Image(systemName: "flame.fill")
-                        .font(.title2)
-                        .foregroundStyle(viewModel.currentStreak > 0 ? .orange : .secondary)
-
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("\(viewModel.currentStreak) days")
-                            .font(Typography.title3Bold)
-                        Text("Current streak")
-                            .font(Typography.caption)
-                            .foregroundStyle(.secondary)
-                    }
-
-                    Spacer()
-                }
+    private func miniStatCard(label: String, value: String, icon: String, iconColor: Color) -> some View {
+        VStack(alignment: .leading, spacing: Spacing.sm) {
+            HStack(spacing: Spacing.xs) {
+                Image(systemName: icon)
+                    .font(.caption)
+                    .foregroundStyle(iconColor)
+                Text(label)
+                    .font(Typography.caption)
+                    .foregroundStyle(Theme.textMutedFallback(for: colorScheme))
             }
 
-            SFCard {
-                HStack {
-                    Image(systemName: "trophy.fill")
-                        .font(.title2)
-                        .foregroundStyle(viewModel.longestStreak > 0 ? .yellow : .secondary)
+            Text(value)
+                .font(Typography.title3Bold)
+                .foregroundStyle(Theme.textPrimaryFallback(for: colorScheme))
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .sfCardStyle()
+    }
 
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("\(viewModel.longestStreak) days")
-                            .font(Typography.title3Bold)
-                        Text("Longest streak")
-                            .font(Typography.caption)
-                            .foregroundStyle(.secondary)
-                    }
+    // MARK: - Streak Row
 
-                    Spacer()
+    private var streakRow: some View {
+        HStack(spacing: Spacing.md) {
+            HStack(spacing: Spacing.md) {
+                Image(systemName: "flame.fill")
+                    .font(.title2)
+                    .foregroundStyle(viewModel.currentStreak > 0 ? .orange : Theme.textMutedFallback(for: colorScheme))
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("\(viewModel.currentStreak) days")
+                        .font(Typography.title3Bold)
+                        .foregroundStyle(Theme.textPrimaryFallback(for: colorScheme))
+                    Text("Current streak")
+                        .font(Typography.caption)
+                        .foregroundStyle(Theme.textMutedFallback(for: colorScheme))
                 }
+
+                Spacer()
             }
+            .sfCardStyle()
+
+            HStack(spacing: Spacing.md) {
+                Image(systemName: "trophy.fill")
+                    .font(.title2)
+                    .foregroundStyle(viewModel.longestStreak > 0 ? .yellow : Theme.textMutedFallback(for: colorScheme))
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("\(viewModel.longestStreak) days")
+                        .font(Typography.title3Bold)
+                        .foregroundStyle(Theme.textPrimaryFallback(for: colorScheme))
+                    Text("Longest streak")
+                        .font(Typography.caption)
+                        .foregroundStyle(Theme.textMutedFallback(for: colorScheme))
+                }
+
+                Spacer()
+            }
+            .sfCardStyle()
         }
     }
 
-    // MARK: - Heatmap
+    // MARK: - Sections
 
     private var heatmapSection: some View {
-        SFCard {
+        VStack(alignment: .leading, spacing: Spacing.lg) {
             HeatmapView(data: viewModel.heatmapData)
         }
+        .sfCardStyle()
     }
-
-    // MARK: - Weekly Progress
 
     private var weeklyProgressSection: some View {
-        SFCard {
+        VStack(alignment: .leading, spacing: Spacing.lg) {
             WeeklyProgressView(subjectProgress: viewModel.subjectWeeklyProgress)
         }
+        .sfCardStyle()
     }
 
-    // MARK: - Subject Breakdown
-
     private var subjectBreakdownSection: some View {
-        SFCard {
+        VStack(alignment: .leading, spacing: Spacing.lg) {
             SubjectBreakdownChart(subjectProgress: viewModel.subjectWeeklyProgress)
         }
+        .sfCardStyle()
     }
 
     // MARK: - Weekly Review
@@ -143,69 +153,43 @@ struct DashboardView: View {
     @ViewBuilder
     private var weeklyReviewSection: some View {
         if let review = viewModel.weeklyReview {
-            SFCard {
-                VStack(alignment: .leading, spacing: Spacing.md) {
-                    HStack {
-                        Text("Last Week Review")
-                            .font(Typography.title3Bold)
+            VStack(alignment: .leading, spacing: Spacing.lg) {
+                HStack {
+                    Text("Last Week")
+                        .font(Typography.title3Bold)
+                        .foregroundStyle(Theme.textPrimaryFallback(for: colorScheme))
 
-                        Spacer()
+                    Spacer()
 
-                        Text(review.formattedChange)
-                            .font(Typography.captionBold)
-                            .foregroundStyle(review.isPositiveChange ? .green : .red)
-                            .padding(.horizontal, Spacing.sm)
-                            .padding(.vertical, Spacing.xs)
-                            .background(
-                                (review.isPositiveChange ? Color.green : Color.red).opacity(0.15)
-                            )
-                            .clipShape(Capsule())
-                    }
+                    Text(review.formattedChange)
+                        .font(Typography.captionBold)
+                        .foregroundStyle(review.isPositiveChange ? .green : .red)
+                        .padding(.horizontal, Spacing.sm)
+                        .padding(.vertical, Spacing.xs)
+                        .background(
+                            (review.isPositiveChange ? Color.green : Color.red).opacity(0.12)
+                        )
+                        .clipShape(Capsule())
+                }
 
-                    HStack(spacing: Spacing.xxl) {
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text("Total")
-                                .font(Typography.caption)
-                                .foregroundStyle(.secondary)
-                            Text(review.formattedTotal)
-                                .font(Typography.bodyBold)
-                        }
-
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text("Sessions")
-                                .font(Typography.caption)
-                                .foregroundStyle(.secondary)
-                            Text("\(review.sessionCount)")
-                                .font(Typography.bodyBold)
-                        }
-
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text("Top Subject")
-                                .font(Typography.caption)
-                                .foregroundStyle(.secondary)
-                            Text("\(review.topSubjectName) (\(review.formattedTopSubject))")
-                                .font(Typography.bodyBold)
-                        }
-                    }
+                HStack(spacing: Spacing.xxl) {
+                    reviewStat(label: "Total", value: review.formattedTotal)
+                    reviewStat(label: "Sessions", value: "\(review.sessionCount)")
+                    reviewStat(label: "Top Subject", value: review.topSubjectName)
                 }
             }
+            .sfCardStyle()
         }
     }
 
-    // MARK: - Helpers
-
-    private func statColumn(label: String, value: String, icon: String) -> some View {
-        VStack(spacing: Spacing.xs) {
-            HStack(spacing: Spacing.xs) {
-                Image(systemName: icon)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                Text(label)
-                    .font(Typography.caption)
-                    .foregroundStyle(.secondary)
-            }
+    private func reviewStat(label: String, value: String) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(label)
+                .font(Typography.caption)
+                .foregroundStyle(Theme.textMutedFallback(for: colorScheme))
             Text(value)
-                .font(Typography.monoStats)
+                .font(Typography.bodyBold)
+                .foregroundStyle(Theme.textPrimaryFallback(for: colorScheme))
         }
     }
 }
