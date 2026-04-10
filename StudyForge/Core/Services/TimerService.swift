@@ -1,5 +1,8 @@
 import Foundation
 import Combine
+#if os(iOS)
+import ActivityKit
+#endif
 
 enum TimerState: Equatable {
     case idle
@@ -48,6 +51,16 @@ final class TimerService: ObservableObject {
     // Anti-gaming threshold: 3 hours in seconds
     private let antiGamingThresholdSeconds: TimeInterval = 10800
 
+    // Live Activity
+    #if os(iOS)
+    private var currentActivity: Activity<StudyForgeActivityAttributes>?
+    #endif
+
+    // Subject info for Live Activity display
+    private var currentSubjectName: String = ""
+    private var currentSubjectColorHex: String = "3B82F6"
+    private var currentSubjectIcon: String = "book.fill"
+
     init(
         sessionRepository: SessionRepository = SessionRepository(),
         preferencesRepository: PreferencesRepository = PreferencesRepository(),
@@ -62,10 +75,13 @@ final class TimerService: ObservableObject {
 
     // MARK: - Public API
 
-    func start(subjectID: UUID, durationSeconds: Int) {
+    func start(subjectID: UUID, durationSeconds: Int, subjectName: String = "", subjectColorHex: String = "3B82F6", subjectIcon: String = "book.fill") {
         guard state == .idle || state == .completed else { return }
 
         currentSubjectID = subjectID
+        currentSubjectName = subjectName
+        currentSubjectColorHex = subjectColorHex
+        currentSubjectIcon = subjectIcon
         totalDurationSeconds = durationSeconds
         remainingSeconds = durationSeconds
         sessionStartedAt = Date()
@@ -77,6 +93,10 @@ final class TimerService: ObservableObject {
         notificationService.scheduleSessionEnd(in: durationSeconds)
         notificationService.scheduleWarning(in: durationSeconds - 300) // 5-min warning
         startDispatchTimer()
+
+        #if os(iOS)
+        startLiveActivity(stateLabel: "Focus")
+        #endif
     }
 
     func pause() {
@@ -88,6 +108,10 @@ final class TimerService: ObservableObject {
 
         notificationService.cancelPending()
         persistBackgroundState()
+
+        #if os(iOS)
+        updateLiveActivity(stateLabel: "Paused", isPaused: true)
+        #endif
     }
 
     func resume() {
@@ -107,6 +131,10 @@ final class TimerService: ObservableObject {
         }
         persistBackgroundState()
         startDispatchTimer()
+
+        #if os(iOS)
+        updateLiveActivity(stateLabel: "Focus", isPaused: false)
+        #endif
     }
 
     func skip() {
@@ -120,6 +148,9 @@ final class TimerService: ObservableObject {
         case .onBreak:
             // Skip break — go back to idle for next focus
             state = .idle
+            #if os(iOS)
+            endLiveActivity()
+            #endif
         default:
             break
         }
@@ -131,6 +162,10 @@ final class TimerService: ObservableObject {
         stopDispatchTimer()
         notificationService.cancelPending()
         clearBackgroundState()
+
+        #if os(iOS)
+        endLiveActivity()
+        #endif
 
         // Don't save session on cancel
         state = .idle
@@ -154,6 +189,11 @@ final class TimerService: ObservableObject {
         notificationService.scheduleBreakEnd(in: duration)
         persistBackgroundState()
         startDispatchTimer()
+
+        #if os(iOS)
+        let label = isLong ? "Long Break" : "Short Break"
+        updateLiveActivity(stateLabel: label, isPaused: false)
+        #endif
     }
 
     // MARK: - Background / Foreground
@@ -244,6 +284,9 @@ final class TimerService: ObservableObject {
                 // Auto-start next focus session would need a subject — stay idle
             }
             soundService.playBreakEnd()
+            #if os(iOS)
+            endLiveActivity()
+            #endif
         default:
             break
         }
@@ -264,6 +307,10 @@ final class TimerService: ObservableObject {
         state = .completed
         pomodorosCompleted += 1
         soundService.playSessionComplete()
+
+        #if os(iOS)
+        endLiveActivity()
+        #endif
 
         #if os(iOS)
         HapticsService.shared.playCompletion()
@@ -337,4 +384,74 @@ final class TimerService: ObservableObject {
         defaults.removeObject(forKey: UserDefaultsKey.pomodorosCompleted)
         defaults.removeObject(forKey: UserDefaultsKey.totalDuration)
     }
+
+    // MARK: - Live Activity
+
+    #if os(iOS)
+    private func startLiveActivity(stateLabel: String) {
+        guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
+
+        let attributes = StudyForgeActivityAttributes(
+            subjectName: currentSubjectName,
+            subjectColorHex: currentSubjectColorHex,
+            subjectIcon: currentSubjectIcon,
+            totalDurationSeconds: totalDurationSeconds
+        )
+
+        let contentState = StudyForgeActivityAttributes.ContentState(
+            endDate: targetEndDate ?? Date().addingTimeInterval(TimeInterval(remainingSeconds)),
+            stateLabel: stateLabel,
+            isPaused: false,
+            pomodorosCompleted: pomodorosCompleted
+        )
+
+        do {
+            let activity = try Activity.request(
+                attributes: attributes,
+                content: .init(state: contentState, staleDate: nil),
+                pushType: nil
+            )
+            currentActivity = activity
+        } catch {
+            // Live Activity request failed — non-critical, continue silently
+        }
+    }
+
+    private func updateLiveActivity(stateLabel: String, isPaused: Bool) {
+        guard let activity = currentActivity else {
+            // No existing activity — start one if we're not paused
+            if !isPaused {
+                startLiveActivity(stateLabel: stateLabel)
+            }
+            return
+        }
+
+        let contentState = StudyForgeActivityAttributes.ContentState(
+            endDate: targetEndDate ?? Date().addingTimeInterval(TimeInterval(remainingSeconds)),
+            stateLabel: stateLabel,
+            isPaused: isPaused,
+            pomodorosCompleted: pomodorosCompleted
+        )
+
+        Task {
+            await activity.update(.init(state: contentState, staleDate: nil))
+        }
+    }
+
+    private func endLiveActivity() {
+        guard let activity = currentActivity else { return }
+
+        let finalState = StudyForgeActivityAttributes.ContentState(
+            endDate: Date(),
+            stateLabel: "Done",
+            isPaused: false,
+            pomodorosCompleted: pomodorosCompleted
+        )
+
+        Task {
+            await activity.end(.init(state: finalState, staleDate: nil), dismissalPolicy: .after(.now + 30))
+        }
+        currentActivity = nil
+    }
+    #endif
 }
