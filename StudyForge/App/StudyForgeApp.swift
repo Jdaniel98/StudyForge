@@ -5,6 +5,7 @@ struct StudyForgeApp: App {
     let persistenceController = PersistenceController.shared
 
     @StateObject private var timerService = TimerService()
+    @State private var showOnboarding = false
 
     init() {
         seedDataIfNeeded()
@@ -20,6 +21,15 @@ struct StudyForgeApp: App {
                 }
                 .onReceive(NotificationCenter.default.publisher(for: .didEnterBackground)) { _ in
                     timerService.appDidEnterBackground()
+                }
+                .onAppear {
+                    if !UserDefaults.standard.bool(forKey: "hasLaunchedBefore") {
+                        showOnboarding = true
+                        UserDefaults.standard.set(true, forKey: "hasLaunchedBefore")
+                    }
+                }
+                .sheet(isPresented: $showOnboarding) {
+                    WelcomeView()
                 }
         }
 

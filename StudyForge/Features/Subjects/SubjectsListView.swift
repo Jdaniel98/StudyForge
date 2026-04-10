@@ -16,10 +16,13 @@ struct SubjectsListView: View {
                     ) {
                         viewModel.addNewSubject()
                     }
+                    .transition(.opacity)
                 } else {
                     subjectList
+                        .transition(.opacity)
                 }
             }
+            .animation(.easeInOut(duration: 0.3), value: viewModel.subjects.isEmpty)
             .background(Theme.surfacePrimaryFallback(for: colorScheme).ignoresSafeArea())
             .navigationTitle("Subjects")
             .toolbar {

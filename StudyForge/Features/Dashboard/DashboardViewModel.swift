@@ -175,6 +175,10 @@ final class DashboardViewModel: ObservableObject {
     var formattedWeeklyTotal: String {
         DurationFormatter.humanReadable(from: weeklyTotalSeconds)
     }
+
+    var hasAnyData: Bool {
+        todaySessionCount > 0 || weeklyTotalSeconds > 0 || currentStreak > 0 || !heatmapData.isEmpty
+    }
 }
 
 // MARK: - Supporting Types

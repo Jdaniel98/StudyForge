@@ -6,18 +6,30 @@ struct DashboardView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: Spacing.lg) {
-                    statsRow
-                    streakRow
-                    heatmapSection
-                    weeklyProgressSection
-                    subjectBreakdownSection
-                    weeklyReviewSection
+            Group {
+                if viewModel.hasAnyData {
+                    ScrollView {
+                        VStack(spacing: Spacing.lg) {
+                            statsRow
+                            streakRow
+                            heatmapSection
+                            weeklyProgressSection
+                            subjectBreakdownSection
+                            weeklyReviewSection
+                        }
+                        .padding(.horizontal, Spacing.lg)
+                        .padding(.vertical, Spacing.md)
+                    }
+                } else {
+                    SFEmptyState(
+                        icon: "chart.bar",
+                        title: "No Data Yet",
+                        subtitle: "Complete your first study session to see stats, streaks, and progress here."
+                    )
+                    .transition(.opacity)
                 }
-                .padding(.horizontal, Spacing.lg)
-                .padding(.vertical, Spacing.md)
             }
+            .animation(.easeInOut(duration: 0.3), value: viewModel.hasAnyData)
             .background(Theme.surfacePrimaryFallback(for: colorScheme).ignoresSafeArea())
             .navigationTitle("Dashboard")
             .onAppear { viewModel.loadAll() }

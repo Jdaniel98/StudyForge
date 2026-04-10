@@ -55,6 +55,7 @@ struct SFHeatmapGrid: View {
                             size: cellSize
                         )
                         .help(tooltipText(for: date))
+                        .accessibilityLabel(tooltipText(for: date))
                     }
                 }
                 .padding(.leading, Spacing.xl) // space for weekday labels
