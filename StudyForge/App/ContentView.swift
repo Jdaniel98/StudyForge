@@ -11,10 +11,14 @@ struct ContentView: View {
                     Label("Timer", systemImage: "timer")
                 }
 
-            // Phase 2 placeholder
-            Text("Dashboard")
+            DashboardView()
                 .tabItem {
                     Label("Dashboard", systemImage: "chart.bar")
+                }
+
+            HistoryView()
+                .tabItem {
+                    Label("History", systemImage: "clock.arrow.circlepath")
                 }
 
             SubjectsListView()
@@ -37,10 +41,15 @@ struct ContentView: View {
                 }
 
                 NavigationLink {
-                    Text("Dashboard — coming in Phase 2")
-                        .foregroundStyle(.secondary)
+                    DashboardView()
                 } label: {
                     Label("Dashboard", systemImage: "chart.bar")
+                }
+
+                NavigationLink {
+                    HistoryView()
+                } label: {
+                    Label("History", systemImage: "clock.arrow.circlepath")
                 }
 
                 NavigationLink {
