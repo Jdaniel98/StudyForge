@@ -46,6 +46,32 @@ final class StatsRepository {
         return streakCount
     }
 
+    /// Returns the longest consecutive-day streak ever recorded.
+    func fetchLongestStreak() throws -> Int {
+        let request = DailyStreak.fetchLast(days: 365)
+        let streaks = try persistenceController.viewContext.fetch(request)
+        guard !streaks.isEmpty else { return 0 }
+
+        let calendar = Calendar.current
+        let streaksByDate = Dictionary(uniqueKeysWithValues: streaks.map { ($0.wrappedDate, $0) })
+
+        var longest = 0
+        var current = 0
+        let today = Date().startOfDay
+
+        for dayOffset in (0..<365).reversed() {
+            guard let date = calendar.date(byAdding: .day, value: -dayOffset, to: today) else { continue }
+            if let streak = streaksByDate[date.startOfDay], streak.totalMinutes > 0 {
+                current += 1
+                longest = max(longest, current)
+            } else {
+                current = 0
+            }
+        }
+
+        return longest
+    }
+
     // MARK: - Weekly Stats
 
     /// Total seconds studied this week for a specific subject
