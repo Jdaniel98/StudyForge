@@ -20,6 +20,10 @@ enum AppError: LocalizedError, Equatable {
     case timerAlreadyRunning
     case noSubjectSelected
 
+    // Auth & Sync
+    case authFailed(String)
+    case syncFailed(String)
+
     var errorDescription: String? {
         switch self {
         case .persistenceSaveFailed(let detail):
@@ -44,6 +48,10 @@ enum AppError: LocalizedError, Equatable {
             "A timer is already running. Stop it before starting a new one."
         case .noSubjectSelected:
             "Please select a subject before starting the timer"
+        case .authFailed(let detail):
+            "Authentication error: \(detail)"
+        case .syncFailed(let detail):
+            "Sync error: \(detail)"
         }
     }
 

@@ -8,11 +8,10 @@ options:
   createIntermediateGroups: true
   generateEmptyDirectories: true
 
-# Supabase — uncomment in Phase 3
-# packages:
-#   Supabase:
-#     url: https://github.com/supabase/supabase-swift
-#     from: "2.0.0"
+packages:
+  Supabase:
+    url: https://github.com/supabase/supabase-swift
+    from: "2.0.0"
 
 targets:
   StudyForge:
@@ -38,8 +37,8 @@ targets:
           SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
         release:
           SWIFT_ACTIVE_COMPILATION_CONDITIONS: ""
-    # dependencies:
-    #   - package: Supabase  # Uncomment in Phase 3
+    dependencies:
+      - package: Supabase
     entitlements:
       path: StudyForge/StudyForge.entitlements
       properties:

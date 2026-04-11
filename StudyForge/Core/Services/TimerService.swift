@@ -307,6 +307,7 @@ final class TimerService: ObservableObject {
         state = .completed
         pomodorosCompleted += 1
         soundService.playSessionComplete()
+        NotificationCenter.default.post(name: .sessionDidComplete, object: nil)
 
         #if os(iOS)
         endLiveActivity()
