@@ -22,6 +22,10 @@ targets:
         excludes:
           - "Widgets/**"
           - "Tests/**"
+    info:
+      path: StudyForge/Info.plist
+      properties:
+        UILaunchScreen: {}
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.estudiosoftware.StudyForge

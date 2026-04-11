@@ -186,9 +186,10 @@ supabase db reset    # applies migrations in supabase/migrations/
 
 | Phase | Status | Notes |
 |---|---|---|
-| 1 — Core Timer | Not started | Timer, subjects, session logging, menu bar |
-| 2 — Dashboard & Goals | Not started | Heatmap, charts, streaks, weekly review |
-| 3 — Auth & Multi-User | Not started | Supabase, auth, groups, leaderboards, presence |
+| 1 — Core Timer | **Done** | Timer, subjects, session logging, menu bar |
+| 2 — Dashboard & Goals | **Done** | Heatmap, charts, streaks, weekly review |
+| 3A — Auth & Sync | **Done** | Supabase auth (email), profile, session sync, Live Activity |
+| 3B — Groups & Leaderboards | Not started | Study groups, leaderboards, real-time presence |
 | 4 — Sync & Widgets | Not started | CloudKit, WidgetKit, Focus mode, export |
 | 5 — Polish | Not started | Sounds, shortcuts, Siri, onboarding |
 

@@ -107,4 +107,19 @@ final class TimerViewModel: ObservableObject {
     var subjectColor: Color {
         selectedSubject?.swiftUIColor ?? Color(hex: "3B82F6")
     }
+
+    /// Shows planned duration when idle, actual remaining time otherwise
+    var displayTime: String {
+        guard let timerService else { return defaultDurationFormatted }
+        if timerService.state == .idle || timerService.state == .completed {
+            return defaultDurationFormatted
+        }
+        return timerService.formattedTime
+    }
+
+    private var defaultDurationFormatted: String {
+        let prefs = try? preferencesRepository.fetch()
+        let seconds = Int(prefs?.focusDurationSeconds ?? UserPreferences.defaultFocusDuration)
+        return DurationFormatter.timerString(from: seconds)
+    }
 }
