@@ -23,6 +23,10 @@ struct StudyForgeApp: App {
                 .onReceive(NotificationCenter.default.publisher(for: .willEnterForeground)) { _ in
                     timerService.appWillEnterForeground()
                     Task { await syncService.syncPendingSessions() }
+                    persistenceController.refreshWidgetData()
+                }
+                .onReceive(NotificationCenter.default.publisher(for: .sessionDidComplete)) { _ in
+                    persistenceController.refreshWidgetData()
                 }
                 .onReceive(NotificationCenter.default.publisher(for: .didEnterBackground)) { _ in
                     timerService.appDidEnterBackground()

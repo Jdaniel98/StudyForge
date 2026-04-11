@@ -43,11 +43,12 @@ targets:
           SWIFT_ACTIVE_COMPILATION_CONDITIONS: ""
     dependencies:
       - package: Supabase
-    entitlements:
-      path: StudyForge/StudyForge.entitlements
-      properties:
-        com.apple.security.app-sandbox: true
-        com.apple.security.network.client: true
+    settings:
+      platform:
+        iOS:
+          CODE_SIGN_ENTITLEMENTS: StudyForge/StudyForge.entitlements
+        macOS:
+          CODE_SIGN_ENTITLEMENTS: StudyForge/StudyForge-macOS.entitlements
 
   StudyForgeWidgets:
     type: app-extension
@@ -55,6 +56,11 @@ targets:
     sources:
       - path: StudyForgeWidgets
       - path: StudyForge/Shared
+    entitlements:
+      path: StudyForgeWidgets/StudyForgeWidgets.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.estudiosoftware.StudyForge
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.estudiosoftware.StudyForge.Widgets
