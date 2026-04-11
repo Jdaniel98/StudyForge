@@ -33,6 +33,7 @@ struct StudyForgeApp: App {
                         UserDefaults.standard.set(true, forKey: "hasLaunchedBefore")
                     }
                 }
+                .preferredColorScheme(.dark)
                 .sheet(isPresented: $showOnboarding) {
                     WelcomeView()
                 }

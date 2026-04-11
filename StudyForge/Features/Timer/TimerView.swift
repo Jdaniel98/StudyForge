@@ -78,7 +78,7 @@ struct TimerView: View {
                 )
 
                 VStack(spacing: Spacing.sm) {
-                    Text(timerService.formattedTime)
+                    Text(viewModel.displayTime)
                         .font(Typography.monoTimer)
                         .foregroundStyle(Theme.textPrimaryFallback(for: colorScheme))
                         .contentTransition(.numericText())

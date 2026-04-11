@@ -212,6 +212,7 @@
 		B31BACBEF6AD775D7C62E0A0 /* SFEmptyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFEmptyState.swift; sourceTree = "<group>"; };
 		BC8DBF5D08A89834B4133553 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		BE162A8487FD6A76716E7E76 /* StudyForge.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StudyForge.xcdatamodel; sourceTree = "<group>"; };
+		BFADE5CFEBA2DF57474AE9E4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C52C08414E8D4B1729D0DFD8 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		D8FDF6163EC2F33EB970774E /* SFTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFTag.swift; sourceTree = "<group>"; };
 		EABA412E3D26E6F6D46D8525 /* WeeklyGoal+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WeeklyGoal+CoreData.swift"; sourceTree = "<group>"; };
@@ -400,6 +401,7 @@
 		9DD5045C11732227ACA0FD6E /* StudyForge */ = {
 			isa = PBXGroup;
 			children = (
+				BFADE5CFEBA2DF57474AE9E4 /* Info.plist */,
 				4DBF35A9C3B1A9B7E172D5A3 /* StudyForge.entitlements */,
 				561E5512AE94687C25FC5661 /* App */,
 				F9CC1C572511AD76F8FDFEFE /* Core */,
@@ -924,6 +926,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = StudyForge/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = StudyForge;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
@@ -1055,6 +1058,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = StudyForge/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = StudyForge;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
@@ -1080,6 +1084,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = StudyForge/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = StudyForge;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
@@ -1105,6 +1110,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = StudyForge/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = StudyForge;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;

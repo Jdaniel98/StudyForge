@@ -1,27 +1,32 @@
 import SwiftUI
+#if os(iOS)
+import UIKit
+#elseif os(macOS)
+import AppKit
+#endif
 
 // MARK: - Semantic Color Tokens
 
 enum Theme {
     // MARK: Surfaces
-    static let surfacePrimary = Color("SurfacePrimary")
-    static let surfaceSecondary = Color("SurfaceSecondary")
-    static let surfaceTertiary = Color("SurfaceTertiary")
+    static let surfacePrimary = adaptive(light: "FFFFFF", dark: "0F172A")
+    static let surfaceSecondary = adaptive(light: "F8FAFC", dark: "1E293B")
+    static let surfaceTertiary = adaptive(light: "F1F5F9", dark: "334155")
 
     // MARK: Accents
-    static let accentFocus = Color("AccentFocus")
-    static let accentBreak = Color("AccentBreak")
-    static let accentWarning = Color("AccentWarning")
-    static let accentDestructive = Color("AccentDestructive")
+    static let accentFocus = Color(hex: "3B82F6")
+    static let accentBreak = Color(hex: "10B981")
+    static let accentWarning = Color(hex: "F59E0B")
+    static let accentDestructive = Color(hex: "EF4444")
 
     // MARK: Text
-    static let textPrimary = Color("TextPrimary")
-    static let textSecondary = Color("TextSecondary")
-    static let textMuted = Color("TextMuted")
+    static let textPrimary = adaptive(light: "0F172A", dark: "F8FAFC")
+    static let textSecondary = adaptive(light: "475569", dark: "CBD5E1")
+    static let textMuted = adaptive(light: "94A3B8", dark: "64748B")
 
     // MARK: Borders
-    static let borderSubtle = Color("BorderSubtle")
-    static let borderStrong = Color("BorderStrong")
+    static let borderSubtle = adaptive(light: "E2E8F0", dark: "1E293B")
+    static let borderStrong = adaptive(light: "CBD5E1", dark: "475569")
 
     // MARK: Corner Radii
     static let radiusSmall: CGFloat = 6
@@ -33,38 +38,48 @@ enum Theme {
     static let shadowColor = Color.black.opacity(0.15)
     static let shadowRadius: CGFloat = 8
     static let shadowY: CGFloat = 2
+
+    // MARK: - Adaptive Color Helper
+
+    private static func adaptive(light lightHex: String, dark darkHex: String) -> Color {
+        #if os(iOS)
+        Color(uiColor: UIColor { traits in
+            let hex = traits.userInterfaceStyle == .dark ? darkHex : lightHex
+            var rgb: UInt64 = 0
+            Scanner(string: hex).scanHexInt64(&rgb)
+            return UIColor(
+                red: CGFloat((rgb >> 16) & 0xFF) / 255,
+                green: CGFloat((rgb >> 8) & 0xFF) / 255,
+                blue: CGFloat(rgb & 0xFF) / 255,
+                alpha: 1
+            )
+        })
+        #else
+        Color(nsColor: NSColor(name: nil) { appearance in
+            let hex = appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua ? darkHex : lightHex
+            var rgb: UInt64 = 0
+            Scanner(string: hex).scanHexInt64(&rgb)
+            return NSColor(
+                red: CGFloat((rgb >> 16) & 0xFF) / 255,
+                green: CGFloat((rgb >> 8) & 0xFF) / 255,
+                blue: CGFloat(rgb & 0xFF) / 255,
+                alpha: 1
+            )
+        })
+        #endif
+    }
 }
 
-// MARK: - Fallback Colors (used until Asset Catalog is set up)
+// MARK: - Legacy Fallback Aliases (forward to adaptive static properties)
 
 extension Theme {
-    static func surfacePrimaryFallback(for scheme: ColorScheme) -> Color {
-        scheme == .dark ? Color(hex: "0F172A") : Color(hex: "FFFFFF")
-    }
-
-    static func surfaceSecondaryFallback(for scheme: ColorScheme) -> Color {
-        scheme == .dark ? Color(hex: "1E293B") : Color(hex: "F8FAFC")
-    }
-
-    static func surfaceTertiaryFallback(for scheme: ColorScheme) -> Color {
-        scheme == .dark ? Color(hex: "334155") : Color(hex: "F1F5F9")
-    }
-
-    static func textPrimaryFallback(for scheme: ColorScheme) -> Color {
-        scheme == .dark ? Color(hex: "F8FAFC") : Color(hex: "0F172A")
-    }
-
-    static func textSecondaryFallback(for scheme: ColorScheme) -> Color {
-        scheme == .dark ? Color(hex: "CBD5E1") : Color(hex: "475569")
-    }
-
-    static func textMutedFallback(for scheme: ColorScheme) -> Color {
-        scheme == .dark ? Color(hex: "64748B") : Color(hex: "94A3B8")
-    }
-
-    static func borderSubtleFallback(for scheme: ColorScheme) -> Color {
-        scheme == .dark ? Color(hex: "1E293B") : Color(hex: "E2E8F0")
-    }
+    static func surfacePrimaryFallback(for _: ColorScheme) -> Color { surfacePrimary }
+    static func surfaceSecondaryFallback(for _: ColorScheme) -> Color { surfaceSecondary }
+    static func surfaceTertiaryFallback(for _: ColorScheme) -> Color { surfaceTertiary }
+    static func textPrimaryFallback(for _: ColorScheme) -> Color { textPrimary }
+    static func textSecondaryFallback(for _: ColorScheme) -> Color { textSecondary }
+    static func textMutedFallback(for _: ColorScheme) -> Color { textMuted }
+    static func borderSubtleFallback(for _: ColorScheme) -> Color { borderSubtle }
 }
 
 // MARK: - Subject Color Palette
