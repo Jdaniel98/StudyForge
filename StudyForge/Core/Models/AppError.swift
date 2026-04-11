@@ -24,6 +24,9 @@ enum AppError: LocalizedError, Equatable {
     case authFailed(String)
     case syncFailed(String)
 
+    // Groups
+    case groupError(String)
+
     var errorDescription: String? {
         switch self {
         case .persistenceSaveFailed(let detail):
@@ -52,6 +55,8 @@ enum AppError: LocalizedError, Equatable {
             "Authentication error: \(detail)"
         case .syncFailed(let detail):
             "Sync error: \(detail)"
+        case .groupError(let detail):
+            "Group error: \(detail)"
         }
     }
 
