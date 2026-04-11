@@ -1,4 +1,5 @@
 import Foundation
+import Supabase
 
 enum AppEnvironment {
     case debug
@@ -15,8 +16,7 @@ enum AppEnvironment {
     var isDebug: Bool { self == .debug }
 }
 
-// MARK: - Supabase Configuration (Phase 3)
-// Placeholder — not used in Phase 1. Will read from Supabase.plist.
+// MARK: - Supabase Configuration
 
 enum SupabaseConfig {
     static var url: String {
@@ -49,3 +49,10 @@ enum SupabaseConfig {
         return dict[key] as? String
     }
 }
+
+// MARK: - Shared Supabase Client
+
+let supabaseClient = SupabaseClient(
+    supabaseURL: URL(string: SupabaseConfig.url)!,
+    supabaseKey: SupabaseConfig.anonKey
+)

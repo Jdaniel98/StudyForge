@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject private var timerService: TimerService
+    @EnvironmentObject private var authService: AuthService
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
@@ -28,10 +29,17 @@ struct ContentView: View {
                     Label("Subjects", systemImage: "book.fill")
                 }
 
-            SettingsView()
-                .tabItem {
-                    Label("Settings", systemImage: "gearshape.fill")
-                }
+            if authService.isAuthenticated {
+                ProfileView()
+                    .tabItem {
+                        Label("Profile", systemImage: "person.fill")
+                    }
+            } else {
+                AuthView()
+                    .tabItem {
+                        Label("Account", systemImage: "person")
+                    }
+            }
         }
         .tint(Theme.accentFocus)
         #else
@@ -69,6 +77,20 @@ struct ContentView: View {
                     } label: {
                         Label("Settings", systemImage: "gearshape.fill")
                     }
+
+                    if authService.isAuthenticated {
+                        NavigationLink {
+                            ProfileView()
+                        } label: {
+                            Label("Profile", systemImage: "person.fill")
+                        }
+                    } else {
+                        NavigationLink {
+                            AuthView()
+                        } label: {
+                            Label("Sign In", systemImage: "person")
+                        }
+                    }
                 }
             }
             .navigationTitle("StudyForge")
@@ -84,5 +106,7 @@ struct ContentView: View {
     ContentView()
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
         .environmentObject(TimerService())
+        .environmentObject(AuthService())
+        .environmentObject(SessionSyncService())
         .preferredColorScheme(.dark)
 }

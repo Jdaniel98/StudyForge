@@ -5,6 +5,8 @@ struct StudyForgeApp: App {
     let persistenceController = PersistenceController.shared
 
     @StateObject private var timerService = TimerService()
+    @StateObject private var authService = AuthService()
+    @StateObject private var syncService = SessionSyncService()
     @State private var showOnboarding = false
 
     init() {
@@ -16,8 +18,11 @@ struct StudyForgeApp: App {
             ContentView()
                 .environment(\.managedObjectContext, persistenceController.viewContext)
                 .environmentObject(timerService)
+                .environmentObject(authService)
+                .environmentObject(syncService)
                 .onReceive(NotificationCenter.default.publisher(for: .willEnterForeground)) { _ in
                     timerService.appWillEnterForeground()
+                    Task { await syncService.syncPendingSessions() }
                 }
                 .onReceive(NotificationCenter.default.publisher(for: .didEnterBackground)) { _ in
                     timerService.appDidEnterBackground()
@@ -73,4 +78,5 @@ extension Notification.Name {
     static let willEnterForeground = NSApplication.willBecomeActiveNotification
     static let didEnterBackground = NSApplication.didResignActiveNotification
     #endif
+    static let sessionDidComplete = Notification.Name("sf_sessionDidComplete")
 }
