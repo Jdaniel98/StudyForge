@@ -1,4 +1,5 @@
 import CoreData
+import WidgetKit
 
 final class PersistenceController {
     static let shared = PersistenceController()
@@ -47,11 +48,35 @@ final class PersistenceController {
         container.viewContext
     }
 
-    init(inMemory: Bool = false) {
-        container = NSPersistentContainer(name: "StudyForge")
+    init(inMemory: Bool = false, useCloudKit: Bool = false) {
+        if useCloudKit {
+            container = NSPersistentCloudKitContainer(name: "StudyForge")
+        } else {
+            container = NSPersistentContainer(name: "StudyForge")
+        }
 
         if inMemory {
             container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")
+        }
+
+        // Configure App Group shared store for widget access
+        if !inMemory {
+            let groupURL = FileManager.default.containerURL(
+                forSecurityApplicationGroupIdentifier: "group.com.estudiosoftware.StudyForge"
+            )
+            if let storeURL = groupURL?.appendingPathComponent("StudyForge.sqlite") {
+                let description = container.persistentStoreDescriptions.first
+                    ?? NSPersistentStoreDescription(url: storeURL)
+                description.url = storeURL
+
+                if useCloudKit {
+                    description.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(
+                        containerIdentifier: "iCloud.com.estudiosoftware.StudyForge"
+                    )
+                }
+
+                container.persistentStoreDescriptions = [description]
+            }
         }
 
         container.loadPersistentStores { _, error in
@@ -83,6 +108,53 @@ final class PersistenceController {
                     continuation.resume(throwing: error)
                 }
             }
+        }
+    }
+
+    /// Update widget shared data after sessions change.
+    /// Called after saving a session or on app foreground.
+    func refreshWidgetData() {
+        let context = viewContext
+
+        do {
+            // Today's stats
+            let todaySessions = try context.fetch(StudySession.fetchToday())
+            let todayMinutes = Int(todaySessions.reduce(0) { $0 + $1.durationSeconds }) / 60
+            let todayCount = todaySessions.count
+            let lastSession = todaySessions.first
+
+            // Weekly stats
+            let weekStart = Calendar.current.date(from: Calendar.current.dateComponents(
+                [.yearForWeekOfYear, .weekOfYear], from: Date()
+            )) ?? Date()
+            let weekRequest = NSFetchRequest<StudySession>(entityName: "StudySession")
+            weekRequest.predicate = NSPredicate(format: "startedAt >= %@", weekStart as NSDate)
+            let weekSessions = try context.fetch(weekRequest)
+            let weeklyMinutes = Int(weekSessions.reduce(0) { $0 + $1.durationSeconds }) / 60
+
+            // Weekly target (sum of all non-archived subjects)
+            let subjectRequest = NSFetchRequest<Subject>(entityName: "Subject")
+            subjectRequest.predicate = NSPredicate(format: "isArchived == NO")
+            let subjects = try context.fetch(subjectRequest)
+            let weeklyTarget = subjects.reduce(0) { $0 + Int($1.weeklyTargetMinutes) }
+
+            // Streak
+            let statsRepo = StatsRepository()
+            let streak = try statsRepo.fetchCurrentStreak()
+
+            WidgetDataProvider.updateWidgetData(
+                todayMinutes: todayMinutes,
+                todaySessionCount: todayCount,
+                currentStreak: streak,
+                weeklyTargetMinutes: weeklyTarget,
+                weeklyCompletedMinutes: weeklyMinutes,
+                lastSubjectName: lastSession?.subject?.wrappedShortName,
+                lastSubjectColor: lastSession?.subject?.wrappedColor
+            )
+
+            WidgetCenter.shared.reloadAllTimelines()
+        } catch {
+            // Non-fatal — widgets just won't update
         }
     }
 }

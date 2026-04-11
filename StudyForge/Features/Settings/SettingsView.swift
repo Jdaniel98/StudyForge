@@ -3,6 +3,8 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(\.colorScheme) private var colorScheme
     @StateObject private var viewModel = SettingsViewModel()
+    @State private var exportURL: URL?
+    @State private var showExportShare = false
 
     var body: some View {
         NavigationStack {
@@ -79,10 +81,29 @@ struct SettingsView: View {
         Section {
             Toggle("iCloud Sync", isOn: $viewModel.iCloudSyncEnabled)
                 .onChange(of: viewModel.iCloudSyncEnabled) { _, _ in viewModel.savePreferences() }
+
+            Button {
+                do {
+                    let url = try ExportService().exportToFile()
+                    exportURL = url
+                    showExportShare = true
+                } catch {
+                    viewModel.error = .persistenceFetchFailed("Failed to export: \(error.localizedDescription)")
+                }
+            } label: {
+                Label("Export Sessions (CSV)", systemImage: "square.and.arrow.up")
+            }
+            #if os(iOS)
+            .sheet(isPresented: $showExportShare) {
+                if let url = exportURL {
+                    ShareSheet(items: [url])
+                }
+            }
+            #endif
         } header: {
             Label("Data", systemImage: "icloud")
         } footer: {
-            Text("Sync personal study data across your Apple devices via iCloud.")
+            Text("Sync personal study data across your Apple devices via iCloud. Export saves all sessions as a CSV file.")
         }
     }
 
