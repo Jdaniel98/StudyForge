@@ -29,6 +29,16 @@ struct ContentView: View {
                     Label("Subjects", systemImage: "book.fill")
                 }
 
+            GroupsListView()
+                .tabItem {
+                    Label("Groups", systemImage: "person.3.fill")
+                }
+
+            LeaderboardView()
+                .tabItem {
+                    Label("Leaderboard", systemImage: "trophy.fill")
+                }
+
             if authService.isAuthenticated {
                 ProfileView()
                     .tabItem {
@@ -70,6 +80,18 @@ struct ContentView: View {
                         SubjectsListView()
                     } label: {
                         Label("Subjects", systemImage: "book.fill")
+                    }
+
+                    NavigationLink {
+                        GroupsListView()
+                    } label: {
+                        Label("Groups", systemImage: "person.3.fill")
+                    }
+
+                    NavigationLink {
+                        LeaderboardView()
+                    } label: {
+                        Label("Leaderboard", systemImage: "trophy.fill")
                     }
 
                     NavigationLink {
