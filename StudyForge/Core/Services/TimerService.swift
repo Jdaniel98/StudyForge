@@ -186,6 +186,7 @@ final class TimerService: ObservableObject {
         targetEndDate = Date().addingTimeInterval(TimeInterval(duration))
         state = .onBreak(isLong: isLong)
 
+        soundService.playBreakStart()
         notificationService.scheduleBreakEnd(in: duration)
         persistBackgroundState()
         startDispatchTimer()

@@ -191,7 +191,7 @@ supabase db reset    # applies migrations in supabase/migrations/
 | 3A — Auth & Sync | **Done** | Supabase auth (email), profile, session sync, Live Activity |
 | 3B — Groups & Leaderboards | **Done** | Study groups, leaderboards, real-time presence |
 | 4 — Sync & Widgets | **Done** | WidgetKit home screen widgets, CloudKit infrastructure, CSV export |
-| 5 — Polish | Not started | Sounds, shortcuts, Siri, onboarding |
+| 5 — Polish | **Done** | Sounds, haptics, keyboard shortcuts, Siri, onboarding |
 
 ## Common Pitfalls
 

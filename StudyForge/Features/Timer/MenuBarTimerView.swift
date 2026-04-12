@@ -48,14 +48,18 @@ struct MenuBarTimerView: View {
                 switch timerService.state {
                 case .running:
                     Button("Pause") { timerService.pause() }
+                        .keyboardShortcut("p", modifiers: .command)
                     Button("Cancel") { timerService.cancel() }
 
                 case .paused:
                     Button("Resume") { timerService.resume() }
+                        .keyboardShortcut("p", modifiers: .command)
                     Button("Skip") { timerService.skip() }
+                        .keyboardShortcut("k", modifiers: .command)
 
                 case .onBreak:
                     Button("Skip Break") { timerService.skip() }
+                        .keyboardShortcut("k", modifiers: .command)
 
                 default:
                     EmptyView()
