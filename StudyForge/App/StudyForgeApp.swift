@@ -39,9 +39,36 @@ struct StudyForgeApp: App {
                 }
                 .preferredColorScheme(.dark)
                 .sheet(isPresented: $showOnboarding) {
-                    WelcomeView()
+                    OnboardingFlowView()
                 }
         }
+        #if os(macOS)
+        .commands {
+            CommandMenu("Timer") {
+                Button("Pause / Resume") {
+                    if timerService.state == .running {
+                        timerService.pause()
+                    } else if timerService.state == .paused {
+                        timerService.resume()
+                    }
+                }
+                .keyboardShortcut("p", modifiers: .command)
+                .disabled(!timerService.isActive)
+
+                Button("Skip") {
+                    timerService.skip()
+                }
+                .keyboardShortcut("k", modifiers: .command)
+                .disabled(!timerService.isActive)
+
+                Button("Cancel Session") {
+                    timerService.cancel()
+                }
+                .keyboardShortcut(.delete, modifiers: .command)
+                .disabled(!timerService.isActive)
+            }
+        }
+        #endif
 
         #if os(macOS)
         MenuBarExtra {
