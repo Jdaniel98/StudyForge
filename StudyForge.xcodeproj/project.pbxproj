@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		000E3C66DFD415968906EFA3 /* SubjectRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E472068046B4A016F656876C /* SubjectRepositoryTests.swift */; };
 		022802460EE0585464518439 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026E6B66DDB605DB6D987216 /* Environment.swift */; };
 		02A16585CF911E23E61EDEB4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE672B94FC09F138ADE6E1D1 /* Assets.xcassets */; };
 		05155295B345C22D1F97A9B1 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D2F6D4F4D83B252CE32783 /* TimerView.swift */; };
@@ -40,6 +41,7 @@
 		2E0BD13A185F4A768C154554 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A4335149835C601668AF7B /* ContentView.swift */; };
 		2EF7E38E0E51D1FD92EA30F4 /* SFProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA900D520A0D48722455EA7E /* SFProgressBar.swift */; };
 		304685902540943E94C6AD1E /* GroupsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC748CB3E611CA65766ADE1E /* GroupsListView.swift */; };
+		316CAD86B0B652142E333A6C /* StatsRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41F0A261DC1E86206E7B859 /* StatsRepositoryTests.swift */; };
 		324A474E324F4204376DC539 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4988C44D3D50F121014F23 /* HistoryView.swift */; };
 		32DFAADC251AB84B52220F22 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37CAC24138E81FA08489C8D /* PersistenceController.swift */; };
 		33ADAF054EC2F2860661B256 /* SubjectRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843D8190ACFCEEE868106B30 /* SubjectRepository.swift */; };
@@ -48,6 +50,7 @@
 		37695ED6F0F190184ADEB466 /* SessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1796051CAA7EAA192C4F17EE /* SessionRepository.swift */; };
 		378AEFDBF00268353058E4DF /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4958D917FA99338A000CA7 /* ShareSheet.swift */; };
 		38E95B07628525ECBC235D50 /* CreateGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AE519494E4938693E01034 /* CreateGroupView.swift */; };
+		3B2C708605C125A372D106AB /* SessionRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7B122FAF1B7794F18E18C9 /* SessionRepositoryTests.swift */; };
 		3B845BF11CAF507FFC1D1F61 /* GoalRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D10ECD00F2B1D4F91D95533 /* GoalRepository.swift */; };
 		3DF0C1C315DC24339A90AA8B /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08439E928352CDA1218701EA /* Typography.swift */; };
 		3FA63BA3D54FD0753A1B144F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C828215C3D5C02E3CDDD14 /* SettingsView.swift */; };
@@ -65,6 +68,7 @@
 		52A88EA66B1870C24F6CA772 /* SFProgressRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE45E9540A7FEB1FA5AB1DDD /* SFProgressRing.swift */; };
 		566D7C59F85AD754459989E8 /* WidgetDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8664B8097FF4F65CEEE01AB /* WidgetDataProvider.swift */; };
 		58D48937779FE8DFBE9BD7FB /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE507D4FCE7C084E4FBB3272 /* ProfileView.swift */; };
+		5AC500323D0E1BDD7F7B8309 /* SubjectRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E472068046B4A016F656876C /* SubjectRepositoryTests.swift */; };
 		5BE2B8AF11A674758EC516F0 /* RealtimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB95E67F052757A810714265 /* RealtimeService.swift */; };
 		5EA3DB4B3DB0261085766C7A /* StudySession+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B35DFE3336FC82D71FE3F0 /* StudySession+CoreData.swift */; };
 		5F5AAE9407401A3896341192 /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4958D917FA99338A000CA7 /* ShareSheet.swift */; };
@@ -81,6 +85,7 @@
 		707C41DB1A6CFF44480BD552 /* SFLeaderboardRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D1EC3BD62F469B8864C3EDA /* SFLeaderboardRow.swift */; };
 		70B4A1C88AE248AA96921422 /* StudyForgeLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070E6BB2C9019777B69CF48D /* StudyForgeLiveActivity.swift */; };
 		7185659867EDC413027ECFE3 /* StudyForgeWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B10F101495B2D017C83B7A5 /* StudyForgeWidgetBundle.swift */; };
+		7188C70EE7CC665E9EAA6FA9 /* StatsRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41F0A261DC1E86206E7B859 /* StatsRepositoryTests.swift */; };
 		731FAAFAE6E7A01305F19934 /* SoundService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ECEE6816E0B27B65CA12D35 /* SoundService.swift */; };
 		73B104DB42AB0AFB3853CF7F /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5E949296FC215FB813B40A /* HistoryViewModel.swift */; };
 		7426F854FADBCBB6982C770C /* WidgetDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8664B8097FF4F65CEEE01AB /* WidgetDataProvider.swift */; };
@@ -112,6 +117,7 @@
 		98F113F3CF5C53DFFA7640CB /* GroupModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD1AA72C025707241F95AE3 /* GroupModels.swift */; };
 		9C8DC4B68F062ADDB54BC94F /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC8DBF5D08A89834B4133553 /* Theme.swift */; };
 		9CB243D8240A57E2D2BED17B /* Supabase.plist in Resources */ = {isa = PBXBuildFile; fileRef = 91020F22302B78DE5B51EFE0 /* Supabase.plist */; };
+		9CB36EBC305BF6CEC9E3CC26 /* PreferencesRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA34557004BF6FF88FE17889 /* PreferencesRepositoryTests.swift */; };
 		9D51B5FA4BB2928C83C37923 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DAB5A1692D82EC689A71957 /* AuthService.swift */; };
 		9ECDB0D3A8D7718C9F850055 /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044D2D3123F32B026FF7078A /* Spacing.swift */; };
 		9F54112FE1DB575F3CDF447F /* SessionSyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B15F30DDFCC7BC3D5BA5592 /* SessionSyncService.swift */; };
@@ -127,11 +133,13 @@
 		BEB4AF7BDCAA81C554878D4E /* DailyStreak+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7B53A8560CE5BAB5098FC8 /* DailyStreak+CoreData.swift */; };
 		C2BC9F83284D6B97F38B35D9 /* SFCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6129CBCC406F25A08E416A84 /* SFCard.swift */; };
 		C75CF8BC0E8B87E1A4C01AB9 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52C08414E8D4B1729D0DFD8 /* WelcomeView.swift */; };
+		C8CF26805BCF1E2AEAF19219 /* SessionRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7B122FAF1B7794F18E18C9 /* SessionRepositoryTests.swift */; };
 		CA5BEF0E6CEF37B39268C4E3 /* SFProgressRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE45E9540A7FEB1FA5AB1DDD /* SFProgressRing.swift */; };
 		CB22A93DB0133CFF67D77D8C /* WeeklyGoal+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EABA412E3D26E6F6D46D8525 /* WeeklyGoal+CoreData.swift */; };
 		CDE43AFC02565673D14400AD /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52C08414E8D4B1729D0DFD8 /* WelcomeView.swift */; };
 		CE129B6DC2858CB0693A2D55 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4988C44D3D50F121014F23 /* HistoryView.swift */; };
 		CE21953A305B9B182A8C142F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C828215C3D5C02E3CDDD14 /* SettingsView.swift */; };
+		CE55F68AE98355DBEBF7E7E4 /* PreferencesRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA34557004BF6FF88FE17889 /* PreferencesRepositoryTests.swift */; };
 		CEAFF92FB816F5643E2F37BF /* GroupDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E513D5A903779015D662F95 /* GroupDetailView.swift */; };
 		D0516077F597FA9EB0999B22 /* SFButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF688DB972419879DE74375C /* SFButton.swift */; };
 		D0848562860E8DA1196075F7 /* DailyProgressWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7515BCEACCA02BCEB79122DB /* DailyProgressWidget.swift */; };
@@ -225,6 +233,7 @@
 		501D913CD1FA28F64CFF841A /* OnboardingFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFlowView.swift; sourceTree = "<group>"; };
 		557338DE9FC0A97D427BEE21 /* Subject+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Subject+CoreData.swift"; sourceTree = "<group>"; };
 		577AA9CDABE81798EA8D3774 /* View+Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Modifiers.swift"; sourceTree = "<group>"; };
+		5A7B122FAF1B7794F18E18C9 /* SessionRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRepositoryTests.swift; sourceTree = "<group>"; };
 		5B10F101495B2D017C83B7A5 /* StudyForgeWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyForgeWidgetBundle.swift; sourceTree = "<group>"; };
 		5FAB373624D56888EC6B1F74 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
 		60D2F6D4F4D83B252CE32783 /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
@@ -268,12 +277,15 @@
 		BFADE5CFEBA2DF57474AE9E4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C52C08414E8D4B1729D0DFD8 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		C62D4578E680D5F8213C324E /* StudyForge-macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "StudyForge-macOS.entitlements"; sourceTree = "<group>"; };
+		CA34557004BF6FF88FE17889 /* PreferencesRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesRepositoryTests.swift; sourceTree = "<group>"; };
 		CB95E67F052757A810714265 /* RealtimeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealtimeService.swift; sourceTree = "<group>"; };
 		D24773A79CE509052D1FD39D /* StudyForgeWidgets.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StudyForgeWidgets.entitlements; sourceTree = "<group>"; };
 		D8FDF6163EC2F33EB970774E /* SFTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFTag.swift; sourceTree = "<group>"; };
 		DC1A454EA074B63BB96D4CB6 /* GroupRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupRepository.swift; sourceTree = "<group>"; };
 		DC748CB3E611CA65766ADE1E /* GroupsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsListView.swift; sourceTree = "<group>"; };
 		DE672B94FC09F138ADE6E1D1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E41F0A261DC1E86206E7B859 /* StatsRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsRepositoryTests.swift; sourceTree = "<group>"; };
+		E472068046B4A016F656876C /* SubjectRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectRepositoryTests.swift; sourceTree = "<group>"; };
 		E8664B8097FF4F65CEEE01AB /* WidgetDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDataProvider.swift; sourceTree = "<group>"; };
 		EABA412E3D26E6F6D46D8525 /* WeeklyGoal+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WeeklyGoal+CoreData.swift"; sourceTree = "<group>"; };
 		EF688DB972419879DE74375C /* SFButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFButton.swift; sourceTree = "<group>"; };
@@ -308,6 +320,10 @@
 		019EEBBC500EE28F4B700F30 /* Unit */ = {
 			isa = PBXGroup;
 			children = (
+				CA34557004BF6FF88FE17889 /* PreferencesRepositoryTests.swift */,
+				5A7B122FAF1B7794F18E18C9 /* SessionRepositoryTests.swift */,
+				E41F0A261DC1E86206E7B859 /* StatsRepositoryTests.swift */,
+				E472068046B4A016F656876C /* SubjectRepositoryTests.swift */,
 				F635288C7C5E7CCF4DEA4A90 /* TimerServiceTests.swift */,
 			);
 			path = Unit;
@@ -794,6 +810,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9CB36EBC305BF6CEC9E3CC26 /* PreferencesRepositoryTests.swift in Sources */,
+				3B2C708605C125A372D106AB /* SessionRepositoryTests.swift in Sources */,
+				316CAD86B0B652142E333A6C /* StatsRepositoryTests.swift in Sources */,
+				000E3C66DFD415968906EFA3 /* SubjectRepositoryTests.swift in Sources */,
 				508E6E643EE49F7604AA41F9 /* TimerServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -802,6 +822,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE55F68AE98355DBEBF7E7E4 /* PreferencesRepositoryTests.swift in Sources */,
+				C8CF26805BCF1E2AEAF19219 /* SessionRepositoryTests.swift in Sources */,
+				7188C70EE7CC665E9EAA6FA9 /* StatsRepositoryTests.swift in Sources */,
+				5AC500323D0E1BDD7F7B8309 /* SubjectRepositoryTests.swift in Sources */,
 				F27A1534458903C3DA5B448B /* TimerServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1055,7 +1079,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.estudiosoftware.StudyForge-macOS";
 				PRODUCT_NAME = StudyForge;
 				SDKROOT = macosx;
-				platform = "[\"macOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge-macOS.entitlements\"], \"iOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge.entitlements\"]]";
+				platform = "[\"iOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge.entitlements\"], \"macOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge-macOS.entitlements\"]]";
 			};
 			name = Release;
 		};
@@ -1180,7 +1204,7 @@
 				PRODUCT_NAME = StudyForge;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				platform = "[\"iOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge.entitlements\"], \"macOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge-macOS.entitlements\"]]";
+				platform = "[\"macOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge-macOS.entitlements\"], \"iOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge.entitlements\"]]";
 			};
 			name = Release;
 		};
@@ -1198,7 +1222,7 @@
 				PRODUCT_NAME = StudyForge;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				platform = "[\"iOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge.entitlements\"], \"macOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge-macOS.entitlements\"]]";
+				platform = "[\"macOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge-macOS.entitlements\"], \"iOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge.entitlements\"]]";
 			};
 			name = Debug;
 		};
@@ -1215,7 +1239,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.estudiosoftware.StudyForge-macOS";
 				PRODUCT_NAME = StudyForge;
 				SDKROOT = macosx;
-				platform = "[\"macOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge-macOS.entitlements\"], \"iOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge.entitlements\"]]";
+				platform = "[\"iOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge.entitlements\"], \"macOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge-macOS.entitlements\"]]";
 			};
 			name = Debug;
 		};
