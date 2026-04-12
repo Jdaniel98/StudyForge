@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		022802460EE0585464518439 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026E6B66DDB605DB6D987216 /* Environment.swift */; };
+		02A16585CF911E23E61EDEB4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE672B94FC09F138ADE6E1D1 /* Assets.xcassets */; };
 		05155295B345C22D1F97A9B1 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D2F6D4F4D83B252CE32783 /* TimerView.swift */; };
 		09608A826B78EB0A8F08B80F /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65EB06D3A2541BA31B6C303 /* Color+Hex.swift */; };
 		099085F101BB00A5EBF6A2BF /* StatsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9558426C8CA99F435152C753 /* StatsRepository.swift */; };
@@ -163,6 +164,7 @@
 		F772991FAC28E1E96B4FE634 /* SFEmptyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31BACBEF6AD775D7C62E0A0 /* SFEmptyState.swift */; };
 		F7F57243D66E5A6120326132 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 79B9761C9732C44C3CB5C210 /* Supabase */; };
 		F9D305A60D39195E16D26C61 /* SubjectEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EC8D8796E68E5316738C94 /* SubjectEditorView.swift */; };
+		FA0AED76F66F46B2302DD559 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE672B94FC09F138ADE6E1D1 /* Assets.xcassets */; };
 		FAAD71377EB2B8A260815630 /* GroupModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD1AA72C025707241F95AE3 /* GroupModels.swift */; };
 		FCF5552CB52D922197487BEE /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044D2D3123F32B026FF7078A /* Spacing.swift */; };
 /* End PBXBuildFile section */
@@ -271,6 +273,7 @@
 		D8FDF6163EC2F33EB970774E /* SFTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFTag.swift; sourceTree = "<group>"; };
 		DC1A454EA074B63BB96D4CB6 /* GroupRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupRepository.swift; sourceTree = "<group>"; };
 		DC748CB3E611CA65766ADE1E /* GroupsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsListView.swift; sourceTree = "<group>"; };
+		DE672B94FC09F138ADE6E1D1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E8664B8097FF4F65CEEE01AB /* WidgetDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDataProvider.swift; sourceTree = "<group>"; };
 		EABA412E3D26E6F6D46D8525 /* WeeklyGoal+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WeeklyGoal+CoreData.swift"; sourceTree = "<group>"; };
 		EF688DB972419879DE74375C /* SFButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFButton.swift; sourceTree = "<group>"; };
@@ -472,6 +475,7 @@
 		9DD5045C11732227ACA0FD6E /* StudyForge */ = {
 			isa = PBXGroup;
 			children = (
+				DE672B94FC09F138ADE6E1D1 /* Assets.xcassets */,
 				BFADE5CFEBA2DF57474AE9E4 /* Info.plist */,
 				C62D4578E680D5F8213C324E /* StudyForge-macOS.entitlements */,
 				4DBF35A9C3B1A9B7E172D5A3 /* StudyForge.entitlements */,
@@ -767,6 +771,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02A16585CF911E23E61EDEB4 /* Assets.xcassets in Resources */,
 				DF76F849B89A477BD00339E9 /* Supabase.plist in Resources */,
 				E22783DE3D30C1BD6AF9AF2D /* Supabase.plist.example in Resources */,
 			);
@@ -776,6 +781,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA0AED76F66F46B2302DD559 /* Assets.xcassets in Resources */,
 				9CB243D8240A57E2D2BED17B /* Supabase.plist in Resources */,
 				817E016D9862458A4F2CBA62 /* Supabase.plist.example in Resources */,
 			);
@@ -1049,7 +1055,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.estudiosoftware.StudyForge-macOS";
 				PRODUCT_NAME = StudyForge;
 				SDKROOT = macosx;
-				platform = "[\"iOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge.entitlements\"], \"macOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge-macOS.entitlements\"]]";
+				platform = "[\"macOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge-macOS.entitlements\"], \"iOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge.entitlements\"]]";
 			};
 			name = Release;
 		};
@@ -1174,7 +1180,7 @@
 				PRODUCT_NAME = StudyForge;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				platform = "[\"macOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge-macOS.entitlements\"], \"iOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge.entitlements\"]]";
+				platform = "[\"iOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge.entitlements\"], \"macOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge-macOS.entitlements\"]]";
 			};
 			name = Release;
 		};
@@ -1192,7 +1198,7 @@
 				PRODUCT_NAME = StudyForge;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				platform = "[\"macOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge-macOS.entitlements\"], \"iOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge.entitlements\"]]";
+				platform = "[\"iOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge.entitlements\"], \"macOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge-macOS.entitlements\"]]";
 			};
 			name = Debug;
 		};
@@ -1209,7 +1215,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.estudiosoftware.StudyForge-macOS";
 				PRODUCT_NAME = StudyForge;
 				SDKROOT = macosx;
-				platform = "[\"iOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge.entitlements\"], \"macOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge-macOS.entitlements\"]]";
+				platform = "[\"macOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge-macOS.entitlements\"], \"iOS\": [\"CODE_SIGN_ENTITLEMENTS\": \"StudyForge/StudyForge.entitlements\"]]";
 			};
 			name = Debug;
 		};
