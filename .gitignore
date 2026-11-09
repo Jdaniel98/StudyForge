@@ -42,3 +42,6 @@ Supabase.plist
 # Playgrounds
 timeline.xctimeline
 playground.xcworkspace
+
+# Local AI assistant instructions
+CLAUDE.md
